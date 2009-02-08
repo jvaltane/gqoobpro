@@ -1,0 +1,45 @@
+==============
+ QOOB-FLASHER
+==============
+
+------------
+INTRODUCTION
+------------
+qoob-flasher is flasher utility to Nintendo Gamecube Qoob Pro mod-chip.
+qoob-flasher is part of the GQoob package which contains GPL and LGPL tools
+for Qoob Pro mod chip.
+
+------------
+REQUIREMENTS
+------------
+* Supported operating system. GNU/Linux, *BSD or MacOSX.
+* libqoob
+   Part of the GQoob package.
+
+------------------
+OTHER REQUIREMENTS
+------------------
+Read libqoob README for detailed information.
+
+----------
+INSTALLING
+----------
+./configure
+make
+make install
+
+---------
+COPYRIGHT
+---------
+qoob-flasher is copyright (C) 2009 Joni Valtanen.
+
+-------
+LICENSE
+-------
+GNU General Public License version 2
+
+----------
+TRADEMARKS
+----------
+Gamecube(tm) is the registered trademark of the Nintendo.
+All other trademarks are the property of their respective owners.

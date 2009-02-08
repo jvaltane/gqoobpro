@@ -1,0 +1,97 @@
+.
+.
+.TH QOOB\-FLASHER 1  "January 2009" "Qoob Pro" "Flasher utility"
+.
+.
+.SH NAME 
+qoob-flasher \- Nintendo Gamecube Qoob Pro mod-chip flasher utility
+.
+.
+.SH SYNOPSIS
+.na
+.nh
+.B qoob\-flasher [OPTIONS]... [FILE]
+.ad
+.hy
+.
+.
+.SH DESCRIPTION
+.B qoob\-flasher
+is a flasher tool for Nintendo Gamecube Qoob Pro 
+.br
+mod\-chip. qoob\-flasher supports listing, erasing, reading 
+.br
+and writing flash slots. Supported file formast for writing are GCB, ELF 
+.br
+and DOL. Reading is GCB only.
+.
+.
+.
+.TP
+.B \-w, \-\-write\=SLOT
+writes given GCB file to flash
+.
+.TP
+.B \-r, \-\-read=SLOT
+reads from flash to given file. Format is GCB
+.
+.TP
+.B \-e, \-\-erase=SLOT
+erase appilacion in flash
+.
+.TP
+.B \-f, \-\-force\-erase=SLOT
+erase one slot
+.
+.TP
+.B \-l, \-\-elf
+specify ELF file format to be flashed. Auto detected.
+.
+.TP
+.B \-d, \-\-dol
+specify DOL file format to be flashed. Not auto detected.
+.
+.TP
+.B \-g, \-\-gcb
+specify GCB (qoob) file format to be flashed. Auto detected.
+.
+.TP
+.B \-v, \-\-verbose
+gives more information what happens when managing flash
+.
+.B \-h, \-\-help
+display help and exits.
+.
+.SH EXAMPLES
+.
+.PP
+.TP
+.B Show what is flashed.
+qoob\-flasher
+.
+.TP
+.B Read bios from the flash and save it to /tmp.
+qoob\-flasher \-r0 /tmp/qoob\-bios.gcb
+.
+.TP
+.B Erase qoob\-bios from flash
+qoob\-flasher \-e0
+.
+.TP
+.B Write bios to the flash.
+qoob\-flasher \-w0 /tmp/qoob\-bios.gcb.
+.
+.
+.SH AUTHOR 
+Written by Joni Valtanen.
+.
+.
+.SH COPYRIGHT
+Copyright  ©  2009  Joni  Valtanen.  License  GNU  GPL  version  2  or
+.br
+later <http://gnu.org/licenses/gpl.html>.  This  is  free  software:  
+.br
+you  are  free to change and redistribute it. There is NO WARRANTY,
+.br
+to the extent permitted by law.
+.

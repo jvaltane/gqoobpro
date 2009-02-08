@@ -1,0 +1,137 @@
+=========
+ LIBQOOB
+=========
+
+------------
+INTRODUCTION
+------------
+libqoob provides easy way to communicate with Gamecube Qoob Pro mod chip via 
+libusb. libqoob is part of the GQoob package which contains LGPL and GPL tools
+for Qoob Pro mod chip.
+
+--------
+QOOB PRO
+--------
+Qoob Pro is mod chip for Nintendo Gamecube with 2Mb(16MBit) internal flash 
+memory. It is flashable via USB. Flash is splitted to 32 pieces, 64kb each. 
+Qoob Pro bios starts at first slot and rest are freely usable. Last official 
+qoob bios (1.3c) uses two slots.
+
+----------------------
+SUPPORTED FILE FORMATS
+----------------------
+ ___
+|GCB|___
+GCB is Qoobs own format. There is special Qoob-flash header within. GCB file 
+format is possible to detected automaticly.
+
+ ___
+|DOL|___
+DOL is Dolphin format which is used by commercial games to Gamecube. DOL file format is not possible to separate random data. That means it is not possible to detect automaticly.
+
+ ___
+|ELF|___
+ELF is format what GCC outputs default. ELF file format is possible to detected
+automaticly.
+
+------------
+REQUIREMENTS
+------------
+* Supported operating system. GNU/Linux, *BSD or MacOSX with macports or 
+  similar .
+* libusb
+
+------------------
+OTHER REQUIREMENTS
+------------------
+ _____
+|Linux|___
+
+With Linux first you have to get Qoob Pro connected properly. There can be 
+problems with kernel. Kernel blocks usage of Qoobb Pro by loading automatically
+hid kernel driver and libqoob can't claim the Qoob Pro:s USB interface. 
+
+* Blacklist Qoob Pro from usbhid module
+
+   Problem is to find way to give options to the kernel-modules on the boottime.
+
+   Module options to usbhid "quirks=0x03eb:0x0001:0x00000004" 0x00000004 means
+   ignoring 0x03eb:0x0001 totally. 0x03eb:0x0001 is Qoob Pro:s USB "address".
+
+   Use "lsusb" to check is Qoob connected. "dmesg" is also informative when 
+   connecting USB devices.
+
+   For example in Ubuntu and probably Debian easiest way to do this is to add 
+   "options quirks=0x03eb:0x0001:0x00000004" to file "/etc/modprobe.d/options"
+   This can be tested with "rmmod usbhid" and "modprobe usbhid". No reboot 
+   required.
+
+* Access with regular user to Qoob Pro USB device (optional)
+
+   Problem is to find way how normal user get read and write permissions to USB
+   device with libusb.
+
+   Normally users do not have access to USB devices. With udev new rule should
+   help. For example add following text to "86-qoobpro.rules" file and add it
+   to same place with other udev rules.
+
+-------------------------------------------------------------------------------
+#
+# udev rules file for Qoob Pro for libusb
+#
+SUBSYSTEMS!="usb", ACTION!="add", GOTO="qoobpro_rules_end"
+
+# Qoob Pro
+ATTRS{idVendor}=="03eb", ATTRS{idProduct}=="0001", GROUP="plugdev", MODE="0660"
+
+LABEL="qoobpro_rules_end"
+-------------------------------------------------------------------------------
+
+   Rule can be found from data directory. Choose your group freely. Other 
+   similar systems might be used instead of udev. Hotplug for example. 
+
+* Do you have different problems and/or know how to solve those? Tell me.
+
+ ______
+|MacOSX|___
+With MacOSX needs to get rid of OS:s control as well.
+
+* Getting over Qoob Pro work with OSX:s libusb 
+Compile and install QoobProDriver kernel extension. Optionally just install it
+if there is suitable version. After installation reboot the machine. Extension is part of the GQoob package.
+
+* After reboot OSX should not steal Qoobs USB interface itself. Normal user 
+should be able to use device as well.
+
+-----------
+TESTED WITH
+-----------
+ _____
+|Linux|___
+* Ubuntu Intrepid (64bit) with libusb 0.1.12.
+ ______
+|MacOSX|___
+* OSX Panther 10.3.9 (PPC) with macports and libusb 0.1.12
+
+----------
+INSTALLING
+----------
+./configure
+make
+make install (as root) 
+
+---------
+COPYRIGHT
+---------
+libqoob is copyright (C) 2009 Joni Valtanen.
+
+-------
+LICENSE
+-------
+GNU Library General Public License version 2
+
+----------
+TRADEMARKS
+----------
+Gamecube(tm) is the registered trademark of the Nintendo.
+All other trademarks are the property of their respective owners.

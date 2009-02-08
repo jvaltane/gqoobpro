@@ -1,0 +1,9 @@
+#
+# udev rules file for Qoob Pro for libusb
+#
+SUBSYSTEMS!="usb", ACTION!="add", GOTO="qoobpro_rules_end"
+
+# Qoob Pro
+ATTRS{idVendor}=="03eb", ATTRS{idProduct}=="0001", GROUP="plugdev", MODE="0660"
+
+LABEL="qoobpro_rules_end"
