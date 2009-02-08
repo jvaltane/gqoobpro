@@ -1,0 +1,33 @@
+===============
+ QoobProDriver
+===============
+
+------------
+INTRODUCTION
+------------
+QoobProDriver is part of the GQoob package. It is collection of GPL and LGPL 
+tools to Nintendo Gamecube Qoob Pro mod chip. QoobProDriver is dummy USB driver
+for MacOSX. It is needed to deny OSX get control over Qoob Pro USB interface.
+
+------------
+REQUIREMENTS
+------------
+* MacOSX
+* XCode
+* Permission to put produced QoobProDriver.kex to kernel extension directory
+
+---------
+COPYRIGHT
+---------
+QoobOroDriver is copyright (C) 2009 Joni Valtanen.
+
+-------
+LICENSE
+-------
+GNU General Public License version 2
+
+----------
+TRADEMARKS
+----------
+Gamecube(tm) is the registered trademark of the Nintendo.
+All other trademarks are the property of their respective owners.
