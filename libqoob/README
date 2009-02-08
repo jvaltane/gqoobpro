@@ -64,7 +64,8 @@ hid kernel driver and libqoob can't claim the Qoob Pro:s USB interface.
    For example in Ubuntu and probably Debian easiest way to do this is to add 
    "options quirks=0x03eb:0x0001:0x00000004" to file "/etc/modprobe.d/options"
    This can be tested with "rmmod usbhid" and "modprobe usbhid". No reboot 
-   required.
+   required. In debian you might have to add "/rtc/modprobe.conf" and line
+   "include /etc/modprobe.d" to there.
 
 * Access with regular user to Qoob Pro USB device (optional)
 
@@ -101,7 +102,7 @@ Compile and install QoobProDriver kernel extension. Optionally just install it
 if there is suitable version. After installation reboot the machine. Extension is part of the GQoob package.
 
 * After reboot OSX should not steal Qoobs USB interface itself. Normal user 
-should be able to use device as well.
+should be able to use device.
 
 -----------
 TESTED WITH
@@ -109,6 +110,7 @@ TESTED WITH
  _____
 |Linux|___
 * Ubuntu Intrepid (64bit) with libusb 0.1.12.
+* Debian Lenny (32bit PPC) with libisb 0.1.12
  ______
 |MacOSX|___
 * OSX Panther 10.3.9 (PPC) with macports and libusb 0.1.12
