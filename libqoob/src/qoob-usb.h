@@ -50,12 +50,15 @@
 
 #define QOOB_USB_CMD_ERASE "\x02"
 
-qoob_error_t qoob_usb_erase_app_from_slot (qoob_t *qoob);
-qoob_error_t qoob_usb_erase_forced (qoob_t *qoob, char from, char to);
-qoob_error_t qoob_usb_find_qoob (qoob_t *qoob);
-qoob_error_t qoob_usb_get_list (qoob_t *qoob);
-qoob_error_t qoob_usb_read_app_to_file (qoob_t *qoob);
-qoob_error_t qoob_usb_write_file_to_flash (qoob_t *qoob);
+qoob_error_t qoob_usb_find (qoob_t *qoob);
+qoob_error_t qoob_usb_read (qoob_t *qoob, char *file);
+qoob_error_t qoob_usb_write (qoob_t *qoob, char *file);
+qoob_error_t qoob_usb_erase (qoob_t *qoob, short int slot_num);
+qoob_error_t qoob_usb_erase_forced (qoob_t *qoob, 
+                                    short int slot_from, 
+                                    short int slot_to);
+qoob_error_t qoob_usb_list (qoob_t *qoob, qoob_slot_t *slots);
+
 void qoob_usb_clear (qoob_t *qoob);
 
 #endif
