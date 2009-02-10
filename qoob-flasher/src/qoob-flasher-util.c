@@ -28,7 +28,9 @@
 #include "qoob-flasher-util.h"
 
 void 
-qoob_flasher_util_parse_options (qoob_t *qoob, int *argc, char ***argv)
+qoob_flasher_util_parse_options (qoob_flasher_t *flasher, 
+                                 int *argc, 
+                                 char ***argv)
 {
   while (1) {
     static struct option long_options[] = {
@@ -55,35 +57,36 @@ qoob_flasher_util_parse_options (qoob_t *qoob, int *argc, char ***argv)
     case 0:
       break;
     case 'h':
-      qoob->help = 1;
+      flasher->help = 1;
       break;
     case 'v':
-      qoob->verbose = 1;
+      qoob_verbose_set (&flasher->qoob, 1);
       break;
     case 'l':
-      qoob->binary_type = QOOB_BINARY_TYPE_ELF;
+      qoob_file_format_set (&flasher->qoob, QOOB_BINARY_TYPE_ELF);
       break;
     case 'd':
-      qoob->binary_type = QOOB_BINARY_TYPE_DOL;
+      qoob_file_format_set (&flasher->qoob, QOOB_BINARY_TYPE_DOL);
       break;
     case 'g':
-      qoob->binary_type = QOOB_BINARY_TYPE_GCB;
+      qoob_file_format_set (&flasher->qoob, QOOB_BINARY_TYPE_GCB);
       break;
     case 'w':
-      qoob->command = QOOB_COMMAND_WRITE;
-      qoob->slotnum = (int)strtol (optarg, NULL, 10);
+
+      flasher->command = FLASHER_COMMAND_WRITE;
+      flasher->slot_num = (int)strtol (optarg, NULL, 10);
       break;
     case 'r':
-      qoob->command = QOOB_COMMAND_READ;
-      qoob->slotnum = (int)strtol (optarg, NULL, 10);
+      flasher->command = FLASHER_COMMAND_READ;
+      flasher->slot_num = (int)strtol (optarg, NULL, 10);
       break;
     case 'e':
-      qoob->command = QOOB_COMMAND_ERASE;
-      qoob->slotnum = (int)strtol (optarg, NULL, 10);
+      flasher->command = FLASHER_COMMAND_ERASE;
+      flasher->slot_num = (int)strtol (optarg, NULL, 10);
       break;
     case 'f':
-      qoob->command = QOOB_COMMAND_FORCE_ERASE;
-      qoob->slotnum = (int)strtol (optarg, NULL, 10);
+      flasher->command = FLASHER_COMMAND_FORCE_ERASE;
+      flasher->slot_num = (int)strtol (optarg, NULL, 10);
       break;
     case '?':
       break;
@@ -94,31 +97,31 @@ qoob_flasher_util_parse_options (qoob_t *qoob, int *argc, char ***argv)
   }
 
   if (optind < (*argc)) {
-    qoob->file =  strdup ((char *)(*argv)[optind]);
+    flasher->file =  strdup ((char *)(*argv)[optind]);
   }
 }
 
 int 
-qoob_flasher_util_test_options (qoob_t *qoob)
+qoob_flasher_util_test_options (qoob_flasher_t *flasher)
 {
-  if (qoob->help == 1) {
-    qoob_usb_clear (qoob);
+  if (flasher->help == 1) {
+    qoob_usb_clear (&flasher->qoob);
     qoop_flasher_util_print_help_and_exit (0);
   }
 
-  if (qoob->command == QOOB_COMMAND_READ ||
-      qoob->command == QOOB_COMMAND_WRITE) {
-    if (qoob->slotnum >= QOOB_PRO_SLOTS || 
-	qoob->slotnum < 0 || 
-	qoob->file == NULL) {
+  if (flasher->command == FLASHER_COMMAND_READ ||
+      flasher->command == FLASHER_COMMAND_WRITE) {
+    if (flasher->slot_num >= QOOB_PRO_SLOTS || 
+	flasher->slot_num < 0 || 
+	flasher->file == NULL) {
       return 1;
     }
   }
 
-  if (qoob->command == QOOB_COMMAND_ERASE ||
-      qoob->command == QOOB_COMMAND_FORCE_ERASE) {
-    if (qoob->slotnum >= QOOB_PRO_SLOTS || 
-	qoob->slotnum < 0) {
+  if (flasher->command == FLASHER_COMMAND_ERASE ||
+      flasher->command == FLASHER_COMMAND_FORCE_ERASE) {
+    if (flasher->slot_num >= QOOB_PRO_SLOTS || 
+	flasher->slot_num < 0) {
       return 1;
     }
   }

@@ -22,8 +22,34 @@
 #ifndef _QOOB_FLASHER_UTIL_H_
 #define _QOOB_FLASHER_UTIL_H_
 
-void qoob_flasher_util_parse_options (qoob_t *qoob, int *argc, char ***argv);
-int qoob_flasher_util_test_options (qoob_t *qoob);
+typedef struct QoobFlasher qoob_flasher_t;
+typedef enum {
+  FLASHER_COMMAND_LIST,
+  FLASHER_COMMAND_READ,
+  FLASHER_COMMAND_WRITE,
+  FLASHER_COMMAND_ERASE,
+  FLASHER_COMMAND_FORCE_ERASE
+} flasher_command_t;
+
+struct QoobFlasher
+{
+  qoob_t qoob;
+  qoob_slot_t slots[QOOB_PRO_SLOTS];
+
+  char *file;
+  short int slot_num;
+  short int erase_from;
+  short int erase_to;
+
+  flasher_command_t command;
+
+  int help;
+};
+
+void qoob_flasher_util_parse_options (qoob_flasher_t *flasher, 
+                                      int *argc, 
+                                      char ***argv);
+int qoob_flasher_util_test_options (qoob_flasher_t *flasher);
 void qoop_flasher_util_print_help_and_exit (int e);
 
 #endif

@@ -33,51 +33,59 @@
 
 #include "qoob-flasher-util.h"
 
-static void print_slots (qoob_t *qoob);
+static int flasher_init (qoob_flasher_t *flasher);
+static void flasher_deinit (qoob_flasher_t *flasher);
+
+static void print_slots (qoob_slot_t *slots);
 
 int
 main (int argc, char **argv)
 {
-  qoob_t qoob;
+  qoob_flasher_t flasher;
   qoob_error_t ret;
 
   /* Initialize struct */
-  ret = qoob_init (&qoob);
-  if (ret != QOOB_ERROR_OK)
+  if (flasher_init (&flasher)) {
     return 1;
+  }
+
+  /* Initialize qoob */
+  ret = qoob_init (&flasher.qoob);
+  if (ret != QOOB_ERROR_OK) {
+    return 1;
+  }
 
   /* Parse options */
-  qoob_flasher_util_parse_options (&qoob, &argc, &argv);
-  if (qoob_flasher_util_test_options (&qoob) != 0) {
-    qoob_usb_clear (&qoob);
+  qoob_flasher_util_parse_options (&flasher, &argc, &argv);
+  if (qoob_flasher_util_test_options (&flasher) != 0) {
+    flasher_deinit (&flasher);
     qoop_flasher_util_print_help_and_exit (1);
   }
 
   /* Check is device connected to USB */
-  ret = qoob_usb_find_qoob (&qoob);
+  ret = qoob_usb_find (&flasher.qoob);
   if (ret != QOOB_ERROR_OK) {
     goto error;
   }
 
   /* Every command needs to list of slots */
-  ret = qoob_usb_get_list (&qoob);
+  ret = qoob_usb_list (&flasher.qoob, flasher.slots);
   if (ret != QOOB_ERROR_OK) {
     goto error;
   }
 
-
   /* Actual command executing */
-  switch (qoob.command) {
+  switch (flasher.command) {
 
   /* List all slots */
-  case QOOB_COMMAND_LIST: {
-    print_slots (&qoob);
+  case FLASHER_COMMAND_LIST: {
+    print_slots (flasher.slots);
   }
     break;
 
   /* Reading flashed bios or application to file */
-  case QOOB_COMMAND_READ: {
-    ret = qoob_usb_read_app_to_file (&qoob);
+  case FLASHER_COMMAND_READ: {
+    ret = qoob_usb_read (&flasher.qoob, flasher.file, flasher.slot_num);
     if (ret != QOOB_ERROR_OK) {
       goto error;
     }
@@ -85,85 +93,98 @@ main (int argc, char **argv)
     break;
 
   /* Writing file to flash */
-  case QOOB_COMMAND_WRITE: {
+  case FLASHER_COMMAND_WRITE: {
+    binary_type_t type;
+
+    ret = qoob_file_format_get (&flasher.qoob, &type);
+    if (ret != QOOB_ERROR_OK) {
+      type = QOOB_BINARY_TYPE_VOID;
+    }
 
     /* Try to get file format type automaticly */
-    if (qoob.binary_type == QOOB_BINARY_TYPE_VOID) {
-      ret = qoob_file_format_parse (&qoob);
+    if (type == QOOB_BINARY_TYPE_VOID) {
+      ret = qoob_file_format_parse (&flasher.qoob, flasher.file, &type);
       if (ret != QOOB_ERROR_OK) {
         goto error;
       }
+      qoob_file_format_set (&flasher.qoob, type);
     }
 
-    if (qoob.binary_type == QOOB_BINARY_TYPE_VOID) {
-      goto error;
-    }
-
-    ret = qoob_usb_write_file_to_flash (&qoob);
+    ret = qoob_file_format_get (&flasher.qoob, &type);
     if (ret != QOOB_ERROR_OK) {
       goto error;
     }
 
-    ret = qoob_usb_get_list (&qoob);
+    if (type == QOOB_BINARY_TYPE_VOID) {
+      goto error;
+    }
+
+    ret = qoob_usb_write (&flasher.qoob, flasher.file, flasher.slot_num);
     if (ret != QOOB_ERROR_OK) {
       goto error;
     }
 
-    print_slots (&qoob);
+    ret = qoob_usb_list (&flasher.qoob, flasher.slots);
+    if (ret != QOOB_ERROR_OK) {
+      goto error;
+    }
+
+    print_slots (flasher.slots);
   }
     break;
 
   /* Erasing slots from flash (safe)*/
-  case QOOB_COMMAND_ERASE: {
+  case FLASHER_COMMAND_ERASE: {
 
-    ret = qoob_usb_erase_app_from_slot (&qoob);
+    ret = qoob_usb_erase (&flasher.qoob, flasher.slot_num);
     if (ret != QOOB_ERROR_OK) {
       goto error;
     }
     
-    ret = qoob_usb_get_list (&qoob);
+    ret = qoob_usb_list (&flasher.qoob, flasher.slots);
     if (ret != QOOB_ERROR_OK) {
       goto error;
     }
-    print_slots (&qoob);
+    print_slots (flasher.slots);
   }
     break;
 
   /* Erasing slots from flash (not safe)*/
-  case QOOB_COMMAND_FORCE_ERASE: {
-    ret = qoob_usb_erase_forced (&qoob, 
-                                  qoob.erase_from, 
-                                  qoob.erase_to);
+  case FLASHER_COMMAND_FORCE_ERASE: {
+    ret = qoob_usb_erase_forced (&flasher.qoob, 
+                                 flasher.erase_from, 
+                                 flasher.erase_to);
     if (ret != QOOB_ERROR_OK) {
       goto error;
     }
 
-    ret = qoob_usb_get_list (&qoob);
+    /* Update slots */
+    ret = qoob_usb_list (&flasher.qoob, flasher.slots);
     if (ret != QOOB_ERROR_OK) {
       goto error;
     }
-    print_slots (&qoob);
+    print_slots (flasher.slots);
   }
     break;
 
   default:
-    qoob_usb_clear (&qoob);
+    flasher_deinit (&flasher);
     qoop_flasher_util_print_help_and_exit (1);
     break;
   }
 
-  qoob_deinit (&qoob);
+  flasher_deinit (&flasher);
 
   return 0;
 
  error:
   printf ("Error: %s\n", qoob_error_to_string (ret));
-  qoob_usb_clear (&qoob);
+  flasher_deinit (&flasher);
   return 1;
 }
 
 static void
-print_slots (qoob_t *qoob)
+print_slots (qoob_slot_t *slots)
 {
     int i;
 
@@ -179,21 +200,50 @@ print_slots (qoob_t *qoob)
     for (i=0; i<QOOB_PRO_SLOTS; i++) {
       printf (" [%02d]\t",i);
 
-      if (qoob->slot[i].type == QOOB_BINARY_TYPE_GCB) {
+      if (slots[i].type == QOOB_BINARY_TYPE_GCB) {
         printf ("[GCB]\t");
-      } else if (qoob->slot[i].type == QOOB_BINARY_TYPE_ELF) {
+      } else if (slots[i].type == QOOB_BINARY_TYPE_ELF) {
         printf ("[ELF]\t");
-      } else if (qoob->slot[i].type == QOOB_BINARY_TYPE_DOL) {
+      } else if (slots[i].type == QOOB_BINARY_TYPE_DOL) {
         printf ("[DOL]\t");
       } else {
         printf ("\t"); 
       }
-      printf ("%s\n",qoob->slot[i].name);
+      printf ("%s\n",slots[i].name);
       if ( ((i+1)%8) == 0)
         printf ("\n");
     }
 }
 
+static int
+flasher_init (qoob_flasher_t *flasher)
+{
+  if (flasher == NULL) {
+    return 1;
+  }
+
+  flasher->command = FLASHER_COMMAND_LIST;
+  flasher->slot_num = -1;
+  flasher->file = NULL;
+
+  /* Impossible situatioons */
+  flasher->erase_from = 32;
+  flasher->erase_to = 32;
+
+  flasher->help = 0;
+}
+
+static void
+flasher_deinit (qoob_flasher_t *flasher)
+{
+  qoob_deinit (&flasher->qoob);
+
+  if (flasher->file != NULL) {
+    free (flasher->file);
+  }
+  flasher->file = NULL;
+
+}
 
 /* Emacs indentatation information
    Local Variables:
