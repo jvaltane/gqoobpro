@@ -51,13 +51,19 @@
 #define QOOB_USB_CMD_ERASE "\x02"
 
 qoob_error_t qoob_usb_find (qoob_t *qoob);
-qoob_error_t qoob_usb_read (qoob_t *qoob, char *file);
-qoob_error_t qoob_usb_write (qoob_t *qoob, char *file);
-qoob_error_t qoob_usb_erase (qoob_t *qoob, short int slot_num);
+qoob_error_t qoob_usb_read (qoob_t *qoob,
+                            char *file,
+                            short int slotnum);
+qoob_error_t qoob_usb_write (qoob_t *qoob,
+                             char *file,
+                             short int slotnum);
+qoob_error_t qoob_usb_erase (qoob_t *qoob, 
+                             short int slot_num);
 qoob_error_t qoob_usb_erase_forced (qoob_t *qoob, 
                                     short int slot_from, 
                                     short int slot_to);
-qoob_error_t qoob_usb_list (qoob_t *qoob, qoob_slot_t *slots);
+qoob_error_t qoob_usb_list (qoob_t *qoob,
+                            qoob_slot_t *slots);
 
 void qoob_usb_clear (qoob_t *qoob);
 

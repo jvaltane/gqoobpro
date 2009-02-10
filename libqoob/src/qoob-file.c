@@ -25,18 +25,22 @@
 #include "qoob-file.h"
 
 qoob_error_t 
-qoob_file_format_parse (qoob_t *qoob)
+qoob_file_format_parse (qoob_t *qoob, 
+                        const char *file, 
+                        binary_type_t *type)
 {
   int fd;
   char buf[4] = {0xff,0xff,0xff,0xff};
   ssize_t read_return;
 
+  *type = QOOB_BINARY_TYPE_VOID;
+
   if (qoob == NULL)
     return QOOB_ERROR_INPUT_NOT_VALID;
-  if (qoob->file == NULL)
+  if (file == NULL)
     return QOOB_ERROR_FILE_NOT_VALID;
 
-  if ((fd = open (qoob->file, O_RDONLY)) == -1) {
+  if ((fd = open (file, O_RDONLY)) == -1) {
     return QOOB_ERROR_FD_OPEN;
   }
 
@@ -50,7 +54,7 @@ qoob_file_format_parse (qoob_t *qoob)
   if (buf[1] == (char)0x45 && 
       buf[2] == (char)0x4c && 
       buf[3] == (char)0x46) {
-    qoob->binary_type = QOOB_BINARY_TYPE_ELF;
+    *type = QOOB_BINARY_TYPE_ELF;
 
   /* Qoob binary types */
   /* QoobELF - This can be ELF or DOL */
@@ -58,17 +62,15 @@ qoob_file_format_parse (qoob_t *qoob)
              buf[1] == (char)0x4c && 
              buf[2] == (char)0x46 &&
              buf[3] == (char) 0x00) {
-    qoob->binary_type = QOOB_BINARY_TYPE_GCB;
+    *type = QOOB_BINARY_TYPE_GCB;
   /* QoobBin */
   } else if (buf[0] == (char)0x28 &&
              buf[1] == (char)0x43 && 
              buf[2] == (char)0x29 &&
              buf[3] == (char) 0x20) {
-    qoob->binary_type = QOOB_BINARY_TYPE_GCB;
+    *type = QOOB_BINARY_TYPE_GCB;
 
   /* Reast are not supported (void) */
-  } else {
-    qoob->binary_type = QOOB_BINARY_TYPE_VOID;
   }
 
   close (fd);

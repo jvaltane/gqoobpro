@@ -22,7 +22,9 @@
 #ifndef _QOOB_FILE_FORMAT_H_
 #define _QOOB_FILE_FORMAT_H_
 
-qoob_error_t qoob_file_format_parse (qoob_t *qoob);
+qoob_error_t qoob_file_format_parse (qoob_t *qoob,
+                                     const char *file,
+                                     binary_type_t *type);
 
 #endif
 

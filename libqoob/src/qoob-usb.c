@@ -160,7 +160,8 @@ qoob_usb_find (qoob_t *qoob)
 
 /* TODO: Check and reqrite asap with better knowledge about usb and flasher */
 qoob_error_t 
-qoob_usb_list (qoob_t *qoob, qoob_slot_t *slots)
+qoob_usb_list (qoob_t *qoob, 
+               qoob_slot_t *slots)
 {
   char slot = 0;
   int tmpptr = 0;
@@ -252,7 +253,9 @@ qoob_usb_list (qoob_t *qoob, qoob_slot_t *slots)
 }
 
 qoob_error_t 
-qoob_usb_read (qoob_t *qoob, char *file)
+qoob_usb_read (qoob_t *qoob,
+               char *file,
+               short int slotnum)
 {
   int ret,i,j;
   char buf[QOOB_PRO_MAX_BUFFER] = {0,};
@@ -272,19 +275,19 @@ qoob_usb_read (qoob_t *qoob, char *file)
     return QOOB_ERROR_FILE_NOT_VALID;
   }
   
-  if (qoob->slotnum >= QOOB_PRO_SLOTS || qoob->slotnum < 0) {
+  if (slotnum >= QOOB_PRO_SLOTS || slotnum < 0) {
     return QOOB_ERROR_SLOT_OUT_OF_RANGE;
   }
 
-  if (qoob->slot[qoob->slotnum].first != TRUE) {
+  if (qoob->slot[slotnum].first != TRUE) {
     return QOOB_ERROR_SLOT_NOT_FIRST;
   }
 
 #ifdef DEBUG
   printf ("file: %s - slot [%02d] - slots used: %d\n", 
           file, 
-          qoob->slotnum, 
-          qoob->slot[qoob->slotnum].slots_used);
+          slotnum, 
+          qoob->slot[slotnum].slots_used);
 #endif
 
   fd = open (file, 
@@ -297,7 +300,7 @@ qoob_usb_read (qoob_t *qoob, char *file)
 
   printf ("\nReading file '%s' starting at slot [%02d]", 
           file, 
-          qoob->slotnum);
+          slotnum);
 
   QOOB_START (qoob->devh, buf);
   receive_answer (qoob->devh, buf);
@@ -305,9 +308,9 @@ qoob_usb_read (qoob_t *qoob, char *file)
   /* No need to size of the file with gcb fileformat. 
      Just read slots used by app 
    */
-  for (i = (int)qoob->slotnum; 
-       i < (int)(qoob->slotnum + 
-                 qoob->slot[qoob->slotnum].slots_used); 
+  for (i = (int)slotnum; 
+       i < (int)(slotnum + 
+                 qoob->slot[slotnum].slots_used); 
        i++) {
     count = 1;
 
@@ -435,7 +438,8 @@ qoob_usb_erase_forced (qoob_t *qoob,
 }
 
 qoob_error_t 
-qoob_usb_erase (qoob_t *qoob, short int slot_num) 
+qoob_usb_erase (qoob_t *qoob, 
+                short int slot_num) 
 {
 
   /* TODO: add checks */
@@ -457,7 +461,9 @@ qoob_usb_erase (qoob_t *qoob, short int slot_num)
 }
 
 qoob_error_t 
-qoob_usb_write (qoob_t *qoob, char *file)
+qoob_usb_write (qoob_t *qoob,
+                char *file,
+                short int slotnum)
 {
   int ret,i,j;
   char buf[QOOB_PRO_MAX_BUFFER];
@@ -480,7 +486,7 @@ qoob_usb_write (qoob_t *qoob, char *file)
     return QOOB_ERROR_FILE_NOT_VALID;
   }
   
-  if (qoob->slotnum >= QOOB_PRO_SLOTS || qoob->slotnum < 0) {
+  if (slotnum >= QOOB_PRO_SLOTS || slotnum < 0) {
     return QOOB_ERROR_SLOT_OUT_OF_RANGE;
   }
 
@@ -535,9 +541,9 @@ qoob_usb_write (qoob_t *qoob, char *file)
   receive_answer (qoob->devh, buf);
 
   printf ("\nWriting file '%s' starting at slot [%02d].\n", 
-          file, qoob->slotnum);
+          file, slotnum);
 
-  for (i=qoob->slotnum; i<(qoob->slotnum+used_slots); i++) {
+  for (i=slotnum; i<(slotnum+used_slots); i++) {
     size_t written = 0;
     int runned = FALSE;
 
@@ -800,7 +806,9 @@ add_to_slot_array (qoob_t *qoob,
 }
 
 static qoob_error_t 
-write_with_header_to_tmp_file (qoob_t *qoob, char *file, size_t size)
+write_with_header_to_tmp_file (qoob_t *qoob,
+                               char *file,
+                               size_t size)
 {
   size_t i = 4;
   int fd, fd_orig;

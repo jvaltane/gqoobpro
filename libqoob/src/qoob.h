@@ -25,14 +25,6 @@
 #ifndef _QOOB_H_
 #define _QOOB_H_
 
-typedef enum {
-  QOOB_COMMAND_LIST,
-  QOOB_COMMAND_READ,
-  QOOB_COMMAND_WRITE,
-  QOOB_COMMAND_ERASE,
-  QOOB_COMMAND_FORCE_ERASE
-} command_t;
-
 typedef struct QoobSlot qoob_slot_t;
 struct QoobSlot {
   /* Name size is actually 0x99 bytes. Possible added 
@@ -53,25 +45,19 @@ struct Qoob
   usb_dev_handle *devh;       /* USB device handle */
 
   int verbose;                /* verbose level*/
-  char *file;                 /* file to read or write */
+
   char *real_file;                 /* tmp file to read or write */
 
-  short int slotnum;          /* slot to start reading 
-                               * slot to start write
-                               * slot to (start) erase 
-                               */
-
-  command_t command;          /* command to execute */
-  char erase_from;            /* range to force erase */
-  char erase_to;
   binary_type_t binary_type;  /* binary type to write */
-  int help;
 
   qoob_slot_t slot[QOOB_PRO_SLOTS];
 };
 
 qoob_error_t qoob_init (qoob_t *qoob);
 void qoob_deinit (qoob_t *qoob);
+
+qoob_error_t qoob_file_format_set (qoob_t *qoob, binary_type_t type);
+qoob_error_t qoob_verbose_set (qoob_t *qoob, int v);
 
 #endif
 

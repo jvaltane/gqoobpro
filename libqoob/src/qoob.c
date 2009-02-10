@@ -50,16 +50,7 @@ qoob_init (qoob_t *qoob)
   qoob->verbose = 0;
 #endif
 
-  qoob->command = QOOB_COMMAND_LIST;
-  qoob->slotnum = -1;
-  qoob->file = NULL;
   qoob->real_file = NULL;
-
-  /* Impossible situatioons */
-  qoob->erase_from = 32;
-  qoob->erase_to = 32;
-
-  qoob->help=0;
 
   for (i=0; i<QOOB_PRO_SLOTS; i++) { 
     qoob->slot[i].first = TRUE;
@@ -80,8 +71,8 @@ qoob_init (qoob_t *qoob)
 void 
 qoob_deinit (qoob_t *qoob)
 {
-  qoob_usb_clear (qoob);
   int i;
+  qoob_usb_clear (qoob);
 
   if (qoob == NULL)
     return;
@@ -90,10 +81,6 @@ qoob_deinit (qoob_t *qoob)
   qoob->dev = NULL;
   qoob->devh = NULL;
   
-  if (qoob->file != NULL)
-    free (qoob->file);
-  qoob->file = NULL;
-
   for (i=0; i<QOOB_PRO_SLOTS; i++) { 
     qoob->slot[i].first = TRUE;
     qoob->slot[i].slots_used = 0;
@@ -101,6 +88,27 @@ qoob_deinit (qoob_t *qoob)
   }
 }
 
+qoob_error_t
+qoob_file_format_set (qoob_t *qoob, binary_type_t type)
+{
+  if (qoob == NULL) {
+    return 1;
+  }
+  qoob->binary_type = type;
+
+  return 0;
+}
+
+qoob_error_t 
+qoob_verbose_set (qoob_t *qoob, int v)
+{
+  if (qoob == NULL) {
+    return 1;
+  }
+  qoob->verbose = v;
+  
+  return 0;
+}
 
 /* Emacs indentatation information
    Local Variables:
