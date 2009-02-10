@@ -57,6 +57,7 @@ qoob_error_t qoob_init (qoob_t *qoob);
 void qoob_deinit (qoob_t *qoob);
 
 qoob_error_t qoob_file_format_set (qoob_t *qoob, binary_type_t type);
+qoob_error_t qoob_file_format_get (qoob_t *qoob, binary_type_t *type);
 qoob_error_t qoob_verbose_set (qoob_t *qoob, int v);
 
 #endif

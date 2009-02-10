@@ -100,6 +100,18 @@ qoob_file_format_set (qoob_t *qoob, binary_type_t type)
 }
 
 qoob_error_t 
+qoob_file_format_get (qoob_t *qoob, binary_type_t *type)
+{
+  if (qoob == NULL) {
+    return 1;
+  }
+  *type = qoob->binary_type;
+
+  return 0;
+}
+
+
+qoob_error_t 
 qoob_verbose_set (qoob_t *qoob, int v)
 {
   if (qoob == NULL) {
