@@ -69,7 +69,7 @@ main (int argc, char **argv)
   }
 
   /* Every command needs to list of slots */
-  ret = qoob_usb_list (&flasher.qoob, flasher.slots);
+  ret = qoob_usb_list (&flasher.qoob, &flasher.slots);
   if (ret != QOOB_ERROR_OK) {
     goto error;
   }
@@ -124,7 +124,7 @@ main (int argc, char **argv)
       goto error;
     }
 
-    ret = qoob_usb_list (&flasher.qoob, flasher.slots);
+    ret = qoob_usb_list (&flasher.qoob, &flasher.slots);
     if (ret != QOOB_ERROR_OK) {
       goto error;
     }
@@ -141,7 +141,7 @@ main (int argc, char **argv)
       goto error;
     }
     
-    ret = qoob_usb_list (&flasher.qoob, flasher.slots);
+    ret = qoob_usb_list (&flasher.qoob, &flasher.slots);
     if (ret != QOOB_ERROR_OK) {
       goto error;
     }
@@ -159,7 +159,7 @@ main (int argc, char **argv)
     }
 
     /* Update slots */
-    ret = qoob_usb_list (&flasher.qoob, flasher.slots);
+    ret = qoob_usb_list (&flasher.qoob, &flasher.slots);
     if (ret != QOOB_ERROR_OK) {
       goto error;
     }
@@ -225,6 +225,7 @@ flasher_init (qoob_flasher_t *flasher)
   flasher->command = FLASHER_COMMAND_LIST;
   flasher->slot_num = -1;
   flasher->file = NULL;
+  flasher->slots = NULL;
 
   /* Impossible situatioons */
   flasher->erase_from = 32;

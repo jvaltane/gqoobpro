@@ -34,7 +34,7 @@ typedef enum {
 struct QoobFlasher
 {
   qoob_t qoob;
-  qoob_slot_t slots[QOOB_PRO_SLOTS];
+  qoob_slot_t *slots; //[QOOB_PRO_SLOTS];
 
   char *file;
   short int slot_num;
