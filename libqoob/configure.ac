@@ -1,4 +1,4 @@
-AC_INIT(libqoob, 0.7, jvaltane@kapsi.fi)
+AC_INIT(libqoob, 0.8, jvaltane@kapsi.fi)
 AC_CONFIG_SRCDIR(Makefile.am)
 
 AM_INIT_AUTOMAKE
