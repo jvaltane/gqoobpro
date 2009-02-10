@@ -6,8 +6,8 @@
 INTRODUCTION
 ------------
 libqoob provides easy way to communicate with Gamecube Qoob Pro mod chip via 
-libusb. libqoob is part of the GQoob package which contains LGPL and GPL tools
-for Qoob Pro mod chip.
+libusb. libqoob is part of the GQoobPro package which contains LGPL and GPL 
+tools for Qoob Pro mod chip.
 
 --------
 QOOB PRO
@@ -99,7 +99,7 @@ With MacOSX needs to get rid of OS:s control as well.
 
 * Getting over Qoob Pro work with OSX:s libusb 
 Compile and install QoobProDriver kernel extension. Optionally just install it
-if there is suitable version. After installation reboot the machine. Extension is part of the GQoob package.
+if there is suitable version. After installation reboot the machine. Extension is part of the GQoobPro package.
 
 * After reboot OSX should not steal Qoobs USB interface itself. Normal user 
 should be able to use device.
