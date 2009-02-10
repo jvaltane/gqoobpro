@@ -63,7 +63,7 @@ qoob_error_t qoob_usb_erase_forced (qoob_t *qoob,
                                     short int slot_from, 
                                     short int slot_to);
 qoob_error_t qoob_usb_list (qoob_t *qoob,
-                            qoob_slot_t *slots);
+                            qoob_slot_t **slots);
 
 void qoob_usb_clear (qoob_t *qoob);
 

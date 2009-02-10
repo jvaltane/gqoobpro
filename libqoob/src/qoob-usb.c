@@ -161,7 +161,7 @@ qoob_usb_find (qoob_t *qoob)
 /* TODO: Check and reqrite asap with better knowledge about usb and flasher */
 qoob_error_t 
 qoob_usb_list (qoob_t *qoob, 
-               qoob_slot_t *slots)
+               qoob_slot_t **slots)
 {
   char slot = 0;
   int tmpptr = 0;
@@ -247,7 +247,7 @@ qoob_usb_list (qoob_t *qoob,
   }
   printf ("\n");
 
-  slots = qoob->slot;
+  *slots = qoob->slot;
 
   return QOOB_ERROR_OK;
 }
