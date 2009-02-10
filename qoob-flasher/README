@@ -12,7 +12,6 @@ for Qoob Pro mod chip.
 ------------
 REQUIREMENTS
 ------------
-* Supported operating system. GNU/Linux, *BSD or MacOSX.
 * libqoob
    - part of the GQoobPro package.
 
