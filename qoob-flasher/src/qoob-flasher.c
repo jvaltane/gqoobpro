@@ -57,6 +57,8 @@ main (int argc, char **argv)
 
   /* Parse options */
   qoob_flasher_util_parse_options (&flasher, &argc, &argv);
+
+  /* Test is user input valid */
   if (qoob_flasher_util_test_options (&flasher) != 0) {
     flasher_deinit (&flasher);
     qoop_flasher_util_print_help_and_exit (1);
@@ -94,41 +96,19 @@ main (int argc, char **argv)
 
   /* Writing file to flash */
   case FLASHER_COMMAND_WRITE: {
-    binary_type_t type;
-
-    ret = qoob_file_format_get (&flasher.qoob, &type);
-    if (ret != QOOB_ERROR_OK) {
-      type = QOOB_BINARY_TYPE_VOID;
-    }
-
-    /* Try to get file format type automaticly */
-    if (type == QOOB_BINARY_TYPE_VOID) {
-      ret = qoob_file_format_parse (&flasher.qoob, flasher.file, &type);
-      if (ret != QOOB_ERROR_OK) {
-        goto error;
-      }
-      qoob_file_format_set (&flasher.qoob, type);
-    }
-
-    ret = qoob_file_format_get (&flasher.qoob, &type);
-    if (ret != QOOB_ERROR_OK) {
-      goto error;
-    }
-
-    if (type == QOOB_BINARY_TYPE_VOID) {
-      goto error;
-    }
 
     ret = qoob_usb_write (&flasher.qoob, flasher.file, flasher.slot_num);
     if (ret != QOOB_ERROR_OK) {
       goto error;
     }
 
+    /* modified -> list */
     ret = qoob_usb_list (&flasher.qoob, &flasher.slots);
     if (ret != QOOB_ERROR_OK) {
       goto error;
     }
 
+    /* modified -> print list */
     print_slots (flasher.slots);
   }
     break;
@@ -145,6 +125,8 @@ main (int argc, char **argv)
     if (ret != QOOB_ERROR_OK) {
       goto error;
     }
+
+    /* modified -> print list */
     print_slots (flasher.slots);
   }
     break;
@@ -163,6 +145,8 @@ main (int argc, char **argv)
     if (ret != QOOB_ERROR_OK) {
       goto error;
     }
+
+    /* modified -> print list */
     print_slots (flasher.slots);
   }
     break;

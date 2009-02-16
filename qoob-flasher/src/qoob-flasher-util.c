@@ -111,17 +111,31 @@ qoob_flasher_util_test_options (qoob_flasher_t *flasher)
 
   if (flasher->command == FLASHER_COMMAND_READ ||
       flasher->command == FLASHER_COMMAND_WRITE) {
+    qoob_error_t ret;
+    binary_type_t type;
+
     if (flasher->slot_num >= QOOB_PRO_SLOTS || 
-	flasher->slot_num < 0 || 
-	flasher->file == NULL) {
+        flasher->slot_num < 0 || 
+        flasher->file == NULL) {
       return 1;
     }
+
+    ret = qoob_file_format_get (&flasher.qoob, &type);    
+    if ((flasher->command == FLASHER_COMMAND_WRITE) && 
+        (ret != QOOB_ERROR_OK)) {
+      return 1;
+    }
+
+    if (type == QOOB_BINARY_TYPE_VOID) {
+      return 1;
+    }
+
   }
 
   if (flasher->command == FLASHER_COMMAND_ERASE ||
       flasher->command == FLASHER_COMMAND_FORCE_ERASE) {
     if (flasher->slot_num >= QOOB_PRO_SLOTS || 
-	flasher->slot_num < 0) {
+        flasher->slot_num < 0) {
       return 1;
     }
   }
@@ -138,10 +152,13 @@ qoop_flasher_util_print_help (void)
   printf ("  -h, --help               display this help and exits\n");
   printf ("  -v, --verbose            gives more information what happens\n");
   printf ("  -l, --list               lists slots in flash\n");
-  printf ("  -w, --write=SLOT         writes given file to flash\n");
+  printf ("  -w, --write=SLOT         writes given file to flash. Use with -d,-l or -g\n");
   printf ("  -r, --read=SLOT          reads gcb file from flash to given file\n");
   printf ("  -e, --erase=SLOT         erase appilacion in flash\n");
   printf ("  -f, --force-erase=SLOT   erase one slot\n");
+  printf ("  -l, --elf                Set ELF file format to write\n");
+  printf ("  -d, --dol                Set DOL file format to write\n");
+  printf ("  -g, --gcb                Set GCB file format to write\n");
   printf ("\n");
 
 
@@ -157,9 +174,9 @@ qoop_flasher_util_print_help (void)
   printf ("  qoob-flasher -e0\n\n");
 
   printf (" Write qoob-bios to flash\n");
-  printf ("  qoob-flasher -w0 /tmp/qoob-bios.gcb\n\n");
+  printf ("  qoob-flasher -g -w0 /tmp/qoob-bios.gcb\n\n");
 
-  printf (" See man page for more detailed descriptions\n\n");  
+  printf ("See also the man page.\n\n");
 }
 
 void
