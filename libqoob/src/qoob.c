@@ -65,6 +65,15 @@ qoob_init (qoob_t *qoob)
     return 2;
   }
 
+  qoob->read = NULL;
+  qoob->write = NULL;
+  qoob->erase = NULL;
+  qoob->list = NULL;
+
+  for (i=0;i<QOOB_DATA_LAST;i++) {
+    qoob->user_data[i] = NULL;
+  }
+
   return 0;
 }
 
@@ -85,6 +94,15 @@ qoob_deinit (qoob_t *qoob)
     qoob->slot[i].first = TRUE;
     qoob->slot[i].slots_used = 0;
     qoob->slot[i].type = QOOB_BINARY_TYPE_VOID;
+  }
+
+  qoob->read = NULL;
+  qoob->write = NULL;
+  qoob->erase = NULL;
+  qoob->list = NULL;
+
+  for (i=0;i<QOOB_DATA_LAST;i++) {
+    qoob->user_data[i] = NULL;
   }
 }
 
@@ -121,6 +139,78 @@ qoob_verbose_set (qoob_t *qoob, int v)
   
   return 0;
 }
+
+
+/* callback code  */
+#define QOOB_SET_CB(q,scb,cb,sdata,data)        \
+       do {                                     \
+         if ((q) == NULL) {                     \
+           return QOOB_ERROR_INPUT_NOT_VALID;   \
+         }                                      \
+         if ((cb) == NULL) {                    \
+           return QOOB_ERROR_INPUT_NOT_VALID;   \
+         }                                      \
+         (scb)=(cb);                            \
+         (sdata)=(data);                        \
+       } while (0)
+
+qoob_error_t
+qoob_set_read_callback (qoob_t *qoob,
+                        void (*cb)(int r, int t, void *user_data),
+                        void *user_data)
+{
+  QOOB_SET_CB(qoob, 
+              qoob->read, cb, 
+              qoob->user_data[QOOB_DATA_READ], user_data);
+
+  return QOOB_ERROR_OK;
+}
+
+qoob_error_t
+qoob_set_write_callback (qoob_t *qoob,
+                         void (*cb)(int w, int t, void *user_data),
+                         void *user_data)
+{
+
+  QOOB_SET_CB(qoob, 
+              qoob->write, cb, 
+              qoob->user_data[QOOB_DATA_WRITE], user_data);
+
+
+  return QOOB_ERROR_OK;
+}
+
+qoob_error_t
+qoob_set_erase_callback (qoob_t *qoob,
+                         void (*cb)(int e, int t, void *user_data),
+                         void *user_data)
+{
+  QOOB_SET_CB(qoob, 
+              qoob->erase, cb, 
+              qoob->user_data[QOOB_DATA_ERASE], user_data);
+
+  return QOOB_ERROR_OK;
+}
+
+qoob_error_t
+qoob_set_list_callback (qoob_t *qoob,
+                        void (*cb)(int r, int t, void *user_data),
+                        void *user_data)
+{
+  QOOB_SET_CB(qoob, 
+              qoob->list, cb, 
+              qoob->user_data[QOOB_DATA_LIST], user_data);
+  
+  return QOOB_ERROR_OK;
+}
+
+
+#if 0
+  void (*list)(int listed, int total, void *user_data);
+  void (*read)(int read, int total, void *user_data);
+  void (*write)(int wrote, int total, void *user_data);
+  void (*erase)(int erased, int total, void *user_data);
+#endif
 
 /* Emacs indentatation information
    Local Variables:

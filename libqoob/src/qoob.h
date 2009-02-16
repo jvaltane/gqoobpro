@@ -37,6 +37,14 @@ struct QoobSlot {
   binary_type_t type;
 };
 
+enum {
+  QOOB_DATA_READ = 0,
+  QOOB_DATA_WRITE,
+  QOOB_DATA_ERASE,
+  QOOB_DATA_LIST,
+  QOOB_DATA_LAST
+};
+
 typedef struct Qoob qoob_t;
 struct Qoob
 {
@@ -51,6 +59,13 @@ struct Qoob
   binary_type_t binary_type;  /* binary type to write */
 
   qoob_slot_t slot[QOOB_PRO_SLOTS];
+
+  /* Callbacks */
+  void (*list) (int listed, int total, void *user_data);
+  void (*read) (int read, int total, void *user_data);
+  void (*write)(int wrote, int total, void *user_data);
+  void (*erase)(int erased, int total, void *user_data);
+  void *user_data[QOOB_DATA_LAST];
 };
 
 qoob_error_t qoob_init (qoob_t *qoob);
@@ -59,6 +74,21 @@ void qoob_deinit (qoob_t *qoob);
 qoob_error_t qoob_file_format_set (qoob_t *qoob, binary_type_t type);
 qoob_error_t qoob_file_format_get (qoob_t *qoob, binary_type_t *type);
 qoob_error_t qoob_verbose_set (qoob_t *qoob, int v);
+
+/* FIXME: add typedefs to callbacks */
+/* callbacks */
+qoob_error_t qoob_set_read_callback (qoob_t *qoob,
+                                     void (*cb)(int r, int t, void *user_data),
+                                     void *user_data);
+qoob_error_t qoob_set_write_callback (qoob_t *qoob,
+                                      void (*cb)(int w, int t, void *user_data),
+                                      void *user_data);
+qoob_error_t qoob_set_erase_callback (qoob_t *qoob,
+                                      void (*cb)(int e, int t, void *user_data),
+                                      void *user_data);
+qoob_error_t qoob_set_write_callback (qoob_t *qoob,
+                                      void (*cb)(int r, int t, void *user_data),
+                                      void *user_data);
 
 #endif
 
