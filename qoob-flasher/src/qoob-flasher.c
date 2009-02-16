@@ -190,10 +190,13 @@ print_slots (qoob_slot_t *slots)
         printf ("[ELF]\t");
       } else if (slots[i].type == QOOB_BINARY_TYPE_DOL) {
         printf ("[DOL]\t");
+      } else if (slots[i].type == QOOB_BINARY_TYPE_CONFIG) {
+        printf ("[CFG]\t");
       } else {
-        printf ("\t"); 
+        printf ("\t");
       }
       printf ("%s\n",slots[i].name);
+
       if ( ((i+1)%8) == 0)
         printf ("\n");
     }

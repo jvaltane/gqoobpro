@@ -32,6 +32,7 @@
 #include "qoob-usb.h"
 
 #define EMPTY_SLOT_NAME "    Empty"
+#define CONFIG_SLOT_NAME "    Config"
 #define CONTINUING_TEXT " [%02d]"
 #define SLOTS_IN_USE_INDEX 2
 
@@ -783,7 +784,18 @@ add_to_slot_array (qoob_t *qoob,
     qoob->slot[slot_number].type = QOOB_BINARY_TYPE_DOL;
   } else if (name[0]=='(' && name[1]=='C' && name[2]==')') {
     qoob->slot[slot_number].type = QOOB_BINARY_TYPE_GCB;
+  } else if (name[0]==(char)0x51 && name[1]==(char)0x43 && 
+             name[2]==(char)0x46 && name[3]==(char)0x47) {
+    strncpy (name, CONFIG_SLOT_NAME, strlen (CONFIG_SLOT_NAME));
+    qoob->slot[slot_number].type = QOOB_BINARY_TYPE_CONFIG;
   } else {
+#if 0
+    int j;
+    printf ("DEBUG\n");
+    for (j=0;j<20;j++)
+      printf ("0x%02x,", (unsigned short int)(unsigned char)name[j]);
+    printf ("\n");
+#endif
     qoob->slot[slot_number].type = QOOB_BINARY_TYPE_VOID;
   }
 
