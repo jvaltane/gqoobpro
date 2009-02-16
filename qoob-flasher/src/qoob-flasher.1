@@ -21,46 +21,52 @@ is a flasher tool for Nintendo Gamecube Qoob Pro
 .br
 mod\-chip. qoob\-flasher supports listing, erasing, reading 
 .br
-and writing flash slots. Supported file formast for writing are GCB, ELF 
+and writing flash slots. Supported file formats for writing 
 .br
-and DOL. Reading is GCB only.
+are GCB, ELF and DOL. Reading is GCB only.
 .
 .
 .
 .TP
 .B \-w, \-\-write\=SLOT
-writes given GCB file to flash
+Write given GCB file to flash. Have to use. One of the
+.br
+.B\-d,\-\-dol, \-l,\-\-elf
+or
+.B \-g.\-\-gcb 
+must be used with write
 .
 .TP
 .B \-r, \-\-read=SLOT
-reads from flash to given file. Format is GCB
+Read from flash to given file. Format is always GCB
 .
 .TP
 .B \-e, \-\-erase=SLOT
-erase appilacion in flash
+Erase application in flash
 .
 .TP
 .B \-f, \-\-force\-erase=SLOT
-erase one slot
+Erase one slot
 .
 .TP
 .B \-l, \-\-elf
-specify ELF file format to be flashed. Auto detected.
+ELF file format to be written
 .
 .TP
 .B \-d, \-\-dol
-specify DOL file format to be flashed. Not auto detected.
+DOL file format to be written
 .
 .TP
 .B \-g, \-\-gcb
-specify GCB (qoob) file format to be flashed. Auto detected.
+GCB (qoob) file format to be written
 .
 .TP
 .B \-v, \-\-verbose
-gives more information what happens when managing flash
+Gives more information what happens when managing flash
 .
+.TP
 .B \-h, \-\-help
-display help and exits.
+Display help and exits
 .
 .SH EXAMPLES
 .
@@ -79,7 +85,7 @@ qoob\-flasher \-e0
 .
 .TP
 .B Write bios to the flash.
-qoob\-flasher \-w0 /tmp/qoob\-bios.gcb.
+qoob\-flasher \-g \-w0 /tmp/qoob\-bios.gcb.
 .
 .
 .SH AUTHOR 
