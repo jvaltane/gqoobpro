@@ -125,11 +125,10 @@ qoob_flasher_util_test_options (qoob_flasher_t *flasher)
         (ret != QOOB_ERROR_OK)) {
       return 1;
     }
-
-    if (type == QOOB_BINARY_TYPE_VOID) {
+    if ((flasher->command == FLASHER_COMMAND_WRITE) &&
+        (type == QOOB_BINARY_TYPE_VOID)) {
       return 1;
     }
-
   }
 
   if (flasher->command == FLASHER_COMMAND_ERASE ||
