@@ -719,7 +719,7 @@ send_data (usb_dev_handle *devh,
   }
 
 #ifdef DEBUG
-  printf ("%s - outbuf:\n", __FUNCTION__);
+  printf ("\n%s - outbuf:\n", __FUNCTION__);
   {
     int i;
     for (i=0;i<QOOB_PRO_MAX_BUFFER;i++) {
@@ -748,7 +748,7 @@ static int receive_answer (usb_dev_handle *devh,
                          DEFAULT_TIMEOUT);
 
 #ifdef DEBUG
-  printf ("\ninbuf:\n");
+  printf ("\n%s - inbuf:\n", __FUNCTION__);
   {
     int i;
     for (i=0;i<QOOB_PRO_MAX_BUFFER;i++) {
@@ -792,6 +792,7 @@ add_to_slot_array (qoob_t *qoob,
              name[1]=='C' &&
              name[2]==')') {
     qoob->slot[slot_number].type = QOOB_BINARY_TYPE_GCB;
+    /* TODO: check is this correct or just this case */
   } else if (slot_number == 31 &&
              name[0]==(char)0x51 &&
              name[1]==(char)0x43 &&
@@ -800,13 +801,6 @@ add_to_slot_array (qoob_t *qoob,
     strncpy (name, CONFIG_SLOT_NAME, strlen (CONFIG_SLOT_NAME));
     qoob->slot[slot_number].type = QOOB_BINARY_TYPE_CONFIG;
   } else {
-#if 0
-    int j;
-    printf ("DEBUG\n");
-    for (j=0;j<20;j++)
-      printf ("0x%02x,", (unsigned short int)(unsigned char)name[j]);
-    printf ("\n");
-#endif
     qoob->slot[slot_number].type = QOOB_BINARY_TYPE_VOID;
   }
 
@@ -844,21 +838,16 @@ write_with_header_to_tmp_file (qoob_t *qoob,
   char used_slots;
   int left = QOOB_PRO_SLOT_SIZE-((QOOB_GCB_HEADER_SIZE+size)%QOOB_PRO_SLOT_SIZE);
 
-  printf ("******** size: %d\n", (int)size);
   used_slots = (char)((size+QOOB_GCB_HEADER_SIZE+left)/QOOB_PRO_SLOT_SIZE);
   if (((size+QOOB_GCB_HEADER_SIZE+left)>QOOB_PRO_SLOT_SIZE) && 
       ((size+QOOB_GCB_HEADER_SIZE+left)%QOOB_PRO_SLOT_SIZE)) {    
-    printf ("******** fix slots\n");
     used_slots++;
   }
-  printf ("******** slots: %d\n", (int)used_slots);
   
   end = file + strlen (file)-1;
 
   /* tmpnam might be unsafe */
   new_name = tmpnam (NULL);
-  printf ("******** new_name: %s\n", new_name);
-  printf ("******** file: %s\n", file);
 
   fd = open (new_name,
              (O_WRONLY|O_CREAT|O_TRUNC), 
@@ -875,7 +864,6 @@ write_with_header_to_tmp_file (qoob_t *qoob,
   if (w != 4) {
     goto werror;
   }
-  printf ("******** i=%d\n", (int)i);
   
   /* 2. Filename */
   /* Get filename */
@@ -895,7 +883,6 @@ write_with_header_to_tmp_file (qoob_t *qoob,
   if (w != (size_t)(end-start)) {
     goto werror;
   }
-  printf ("******** i=%d\n", (int)i);
 
   /* 3. Fill rest of the header */
   /* Write zeros to rest of header except to 0xfd is written how many slots 
@@ -948,8 +935,6 @@ write_with_header_to_tmp_file (qoob_t *qoob,
 
   close (fd);
   close (fd_orig);
-
-  printf ("******** file: %s\n", file);
 
 
   return QOOB_ERROR_OK;
