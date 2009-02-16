@@ -120,7 +120,7 @@ qoob_flasher_util_test_options (qoob_flasher_t *flasher)
       return 1;
     }
 
-    ret = qoob_file_format_get (&flasher.qoob, &type);    
+    ret = qoob_file_format_get (&(flasher->qoob), &type);    
     if ((flasher->command == FLASHER_COMMAND_WRITE) && 
         (ret != QOOB_ERROR_OK)) {
       return 1;
