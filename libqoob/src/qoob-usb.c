@@ -777,15 +777,26 @@ add_to_slot_array (qoob_t *qoob,
   used_slots = info[SLOTS_IN_USE_INDEX];
   name_start = 4;
 
-  if (name[0]=='E' && name[1]=='L' && name[2]=='F' &&
-      info[6]=='E' && info[7]=='L' && info[8]=='F') {
+  if (name[0]=='E' &&
+      name[1]=='L' &&
+      name[2]=='F' &&
+      info[6]=='E' &&
+      info[7]=='L' &&
+      info[8]=='F') {
     qoob->slot[slot_number].type = QOOB_BINARY_TYPE_ELF;
-  } else if (name[0]=='E' && name[1]=='L' && name[2]=='F') {
+  } else if (name[0]=='E' &&
+             name[1]=='L' &&
+             name[2]=='F') {
     qoob->slot[slot_number].type = QOOB_BINARY_TYPE_DOL;
-  } else if (name[0]=='(' && name[1]=='C' && name[2]==')') {
+  } else if (name[0]=='(' &&
+             name[1]=='C' &&
+             name[2]==')') {
     qoob->slot[slot_number].type = QOOB_BINARY_TYPE_GCB;
-  } else if (name[0]==(char)0x51 && name[1]==(char)0x43 && 
-             name[2]==(char)0x46 && name[3]==(char)0x47) {
+  } else if (slot_number == 31 &&
+             name[0]==(char)0x51 &&
+             name[1]==(char)0x43 &&
+             name[2]==(char)0x46 &&
+             name[3]==(char)0x47) {
     strncpy (name, CONFIG_SLOT_NAME, strlen (CONFIG_SLOT_NAME));
     qoob->slot[slot_number].type = QOOB_BINARY_TYPE_CONFIG;
   } else {
