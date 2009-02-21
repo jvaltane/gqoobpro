@@ -62,7 +62,7 @@ hid kernel driver and libqoob can't claim the Qoob Pro:s USB interface.
    connecting USB devices.
 
    For example in Ubuntu and probably Debian easiest way to do this is to add 
-   "options quirks=0x03eb:0x0001:0x00000004" to file "/etc/modprobe.d/options"
+   "options usbhid quirks=0x03eb:0x0001:0x00000004" to file "/etc/modprobe.d/options"
    This can be tested with "rmmod usbhid" and "modprobe usbhid". No reboot 
    required. In debian you might have to add "/rtc/modprobe.conf" and line
    "include /etc/modprobe.d" to there.
