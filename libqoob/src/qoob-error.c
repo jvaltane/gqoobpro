@@ -57,6 +57,8 @@ qoob_error_to_string (qoob_error_t e)
     return "Seek fails!!!";
   case QOOB_ERROR_SEND_DATA:
     return "Sending data to device fails!!!";
+  case QOOB_ERROR_TRYING_TO_OVERWRITE:
+    return "Trying to overwrite existing data!!!";
   default:
     break;
   }
