@@ -540,6 +540,19 @@ qoob_usb_write (qoob_t *qoob,
     used_slots++;
   }
 
+  if ((slotnum+used_slots) >= QOOB_PRO_SLOTS) {
+    return QOOB_ERROR_SLOT_OUT_OF_RANGE;
+  }
+
+  for (i=slotnum; i<(slotnum+used_slots); i++) {
+    if (qoob->slot[i].type != QOOB_BINARY_TYPE_VOID) {
+      REMOVE_FILE(qoob->real_file, is_tmpfile);
+      free (qoob->real_file);
+      qoob->real_file = NULL;
+      return QOOB_ERROR_TRYING_TO_OVERWRITE;
+    }
+  }
+
 #ifdef DEBUG
   printf ("Slots used: %d\n", used_slots);
 #endif
