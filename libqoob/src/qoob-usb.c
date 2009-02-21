@@ -408,7 +408,8 @@ qoob_usb_erase_forced (qoob_t *qoob,
     return QOOB_ERROR_SLOT_RANGE_NOT_VALID;
   }
 
-  printf ("\nErasing app starting at slot [%02d].\n", slot_from);
+  printf ("\nErasing flash starting at slot [%02d] to slot [%02d].\n", 
+          slot_from, slot_to);
 
   for (i=slot_from; i<=slot_to; i++) {
 
@@ -551,6 +552,15 @@ qoob_usb_write (qoob_t *qoob,
       qoob->real_file = NULL;
       return QOOB_ERROR_TRYING_TO_OVERWRITE;
     }
+  }
+
+  /* Flash can have still some data so data is erased anyway */
+  ret = qoob_usb_erase_forced (qoob, slotnum, (slotnum+used_slots-1));
+  if (ret != QOOB_ERROR_OK) {
+    REMOVE_FILE(qoob->real_file, is_tmpfile);
+    free (qoob->real_file);
+    qoob->real_file = NULL;
+    return ret;
   }
 
 #ifdef DEBUG
