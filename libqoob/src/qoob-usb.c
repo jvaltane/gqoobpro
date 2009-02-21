@@ -834,12 +834,10 @@ add_to_slot_array (qoob_t *qoob,
              name[1]=='C' &&
              name[2]==')') {
     qoob->slot[slot_number].type = QOOB_BINARY_TYPE_GCB;
-    /* TODO: check is this correct or just this case */
-  } else if (slot_number == 31 &&
-             name[0]==(char)0x51 &&
-             name[1]==(char)0x43 &&
-             name[2]==(char)0x46 &&
-             name[3]==(char)0x47) {
+  } else if (name[0]=='Q' &&
+             name[1]=='C' &&
+             name[2]=='F' &&
+             name[3]=='G') {
     strncpy (name, CONFIG_SLOT_NAME, strlen (CONFIG_SLOT_NAME));
     qoob->slot[slot_number].type = QOOB_BINARY_TYPE_CONFIG;
   } else {
