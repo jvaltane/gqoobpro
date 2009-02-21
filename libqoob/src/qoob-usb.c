@@ -461,6 +461,17 @@ qoob_usb_erase (qoob_t *qoob,
   return QOOB_ERROR_OK;
 }
 
+
+#define REMOVE_FILE(rf, c) \
+do {\
+  if (c == TRUE) {\
+    if ((unlink (rf)) != 0) {\
+      fprintf (stderr, \
+               "Error: Could not remove temporary file from /tmp!!!\n"); \
+    }\
+  }\
+} while (0)
+
 qoob_error_t 
 qoob_usb_write (qoob_t *qoob,
                 char *file,
@@ -474,6 +485,7 @@ qoob_usb_write (qoob_t *qoob,
   off_t seek_to = 0;
   qoob_error_t err;
   struct stat sbuf;
+  int is_tmpfile = FALSE;
 
   if (qoob == NULL) {
     return QOOB_ERROR_INPUT_NOT_VALID;;
@@ -509,6 +521,7 @@ qoob_usb_write (qoob_t *qoob,
       qoob->real_file = NULL;
       return err;
     }
+    is_tmpfile = TRUE;
   }
 
   printf ("Real file: '%s'\n", qoob->real_file);
@@ -533,6 +546,7 @@ qoob_usb_write (qoob_t *qoob,
 
   fd = open (qoob->real_file, O_RDONLY);
   if (fd == -1) {
+    REMOVE_FILE(qoob->real_file, is_tmpfile);
     free (qoob->real_file);
     qoob->real_file = NULL;
     return QOOB_ERROR_FD_OPEN;
@@ -561,6 +575,7 @@ qoob_usb_write (qoob_t *qoob,
 
     ret = lseek (fd, seek_to, SEEK_SET);
     if (ret < 0) {
+      REMOVE_FILE(qoob->real_file, is_tmpfile);
       close (fd);
       free (qoob->real_file);
       qoob->real_file = NULL;
@@ -601,6 +616,7 @@ qoob_usb_write (qoob_t *qoob,
 
         ret = lseek (fd, seek_to, SEEK_SET);
         if (ret < 0) {
+          REMOVE_FILE(qoob->real_file, is_tmpfile);
           close (fd);
           free (qoob->real_file);
           qoob->real_file = NULL;
@@ -615,6 +631,7 @@ qoob_usb_write (qoob_t *qoob,
 
       r = read (fd, buf+1, QOOB_PRO_MAX_BUFFER-1);
       if (r == -1) {
+        REMOVE_FILE(qoob->real_file, is_tmpfile);
         close (fd);
         free (qoob->real_file);
         qoob->real_file = NULL;
@@ -623,6 +640,7 @@ qoob_usb_write (qoob_t *qoob,
 
       ret = send_data (qoob->devh, buf);
       if (ret < 0) {
+        REMOVE_FILE(qoob->real_file, is_tmpfile);
         close (fd);
         free (qoob->real_file);
         qoob->real_file = NULL;
@@ -636,6 +654,7 @@ qoob_usb_write (qoob_t *qoob,
   QOOB_END (qoob->devh, buf);
   receive_answer (qoob->devh, buf);
 
+  REMOVE_FILE(qoob->real_file, is_tmpfile);
   close (fd);
   free (qoob->real_file);
   qoob->real_file = NULL;
