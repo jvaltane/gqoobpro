@@ -1,0 +1,9 @@
+libqoob 0.9
+
+Changes since libqoob 0.8:
+
+    * Add support for Qoob configure file format
+    * Add more input tests to write
+    * Erase area what will be written
+    * Now removes temporary file created by write
+    * README updated
