@@ -541,7 +541,7 @@ qoob_usb_write (qoob_t *qoob,
     used_slots++;
   }
 
-  if ((slotnum+used_slots) >= QOOB_PRO_SLOTS) {
+  if ((slotnum+used_slots-1) >= QOOB_PRO_SLOTS) {
     return QOOB_ERROR_SLOT_OUT_OF_RANGE;
   }
 
