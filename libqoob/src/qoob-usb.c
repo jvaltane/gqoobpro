@@ -42,9 +42,9 @@
 #define RECV_REQUEST 0x1
 #define RECV_VALUE 0x300
 
-#define QOOB_READ_LOOP_DEFAULT (1024+16)
-#define QOOB_READ_LOOP_MISSING_BYTES 16
-#define QOOB_READ_LOOP_HALF_WAY 520
+#define QOOB_READ_LOOP_DEFAULT (1024+16+2)
+#define QOOB_READ_LOOP_MISSING_BYTES 8
+#define QOOB_READ_LOOP_HALF_WAY 522
 
 #define QOOB_WRITE_LOOP_DEFAULT (1024+16+2)
 #define QOOB_WRITE_LOOP_MISSING_BYTES 16
@@ -261,8 +261,8 @@ qoob_usb_read (qoob_t *qoob,
   int ret,i,j;
   char buf[QOOB_PRO_MAX_BUFFER] = {0,};
   int fd;
-  int count;
   size_t wrote;
+  off_t seek_to = 0;
 
   if (qoob == NULL) {
     return QOOB_ERROR_INPUT_NOT_VALID;;
@@ -313,10 +313,16 @@ qoob_usb_read (qoob_t *qoob,
        i < (int)(slotnum + 
                  qoob->slot[slotnum].slots_used); 
        i++) {
-    count = 1;
-
+    off_t sret = 0;
 
     printf ("\nslot [%02d]\n", i);
+
+    sret = lseek (fd, seek_to, SEEK_SET);
+    if (sret < 0) {
+      close (fd);
+      return QOOB_ERROR_FD_SEEK;
+    }
+    seek_to = seek_to + QOOB_DEFAULT_SEEK;
 
     /* Reading app to file */
     send_command (qoob->devh, 
@@ -329,7 +335,7 @@ qoob_usb_read (qoob_t *qoob,
     /* Get 64 byte packet, but first byte is always zero. 
      * only 63 bytes is valid data to read.
      */
-    for (j=0; j<QOOB_READ_LOOP_DEFAULT; j++) { /*about 1040 */
+    for (j=0; j<QOOB_READ_LOOP_DEFAULT; j++) {
       if ((j%16)==0) {
         printf (".");
         fflush (stdout);
@@ -343,23 +349,28 @@ qoob_usb_read (qoob_t *qoob,
         return QOOB_ERROR_FD_WRITE;
       }
 
-#if 0
-      /* Works without this, not with!! Weird thing because 
-         windows flasher sends this kind of command about 
-         half of the slot position.
-       */
-      if (count == QOOB_READ_LOOP_HALF_WAY) {
+      if(((j+1)%QOOB_READ_LOOP_HALF_WAY) == 0) {
+#ifdef DEBUG
         printf ("******** Reached half way of slot\n");
+#endif
         send_command (qoob->devh, 
                       QOOB_USB_CMD_READ_SLOT, 
                       QOOB_USB_CMD_READ_SLOT_ALL_HALF_WAY,
                       QOOB_USB_CMD_READ_SLOT_ALL,
-                      i,
+                      (char)i,
                       buf);
+
+        memset (buf, 0, QOOB_PRO_MAX_BUFFER);
+
+        ret = lseek (fd, seek_to, SEEK_SET);
+        if (ret < 0) {
+          close (fd);
+          return QOOB_ERROR_FD_SEEK;
+        }
+        seek_to = seek_to + QOOB_DEFAULT_SEEK;
       }
-#endif
-      count++;
-    }
+    } /* for (j...*/
+
     ret = receive_answer (qoob->devh, buf);
     wrote = write (fd, buf+1, (size_t)(QOOB_READ_LOOP_MISSING_BYTES));
     if (wrote == -1) {
@@ -367,7 +378,7 @@ qoob_usb_read (qoob_t *qoob,
       return QOOB_ERROR_FD_WRITE;
     }
 
-  }
+  } /* for (i...*/
 
   QOOB_END (qoob->devh, buf);
   receive_answer (qoob->devh, buf);
@@ -463,7 +474,7 @@ qoob_usb_erase (qoob_t *qoob,
 }
 
 
-#define REMOVE_FILE(rf, c) \
+#define REMOVE_TMPFILE(rf, c) \
 do {\
   if (c == TRUE) {\
     if ((unlink (rf)) != 0) {\
@@ -547,7 +558,7 @@ qoob_usb_write (qoob_t *qoob,
 
   for (i=slotnum; i<(slotnum+used_slots); i++) {
     if (qoob->slot[i].type != QOOB_BINARY_TYPE_VOID) {
-      REMOVE_FILE(qoob->real_file, is_tmpfile);
+      REMOVE_TMPFILE(qoob->real_file, is_tmpfile);
       free (qoob->real_file);
       qoob->real_file = NULL;
       return QOOB_ERROR_TRYING_TO_OVERWRITE;
@@ -557,7 +568,7 @@ qoob_usb_write (qoob_t *qoob,
   /* Flash can have still some data so data is erased anyway */
   ret = qoob_usb_erase_forced (qoob, slotnum, (slotnum+used_slots-1));
   if (ret != QOOB_ERROR_OK) {
-    REMOVE_FILE(qoob->real_file, is_tmpfile);
+    REMOVE_TMPFILE(qoob->real_file, is_tmpfile);
     free (qoob->real_file);
     qoob->real_file = NULL;
     return ret;
@@ -569,7 +580,7 @@ qoob_usb_write (qoob_t *qoob,
 
   fd = open (qoob->real_file, O_RDONLY);
   if (fd == -1) {
-    REMOVE_FILE(qoob->real_file, is_tmpfile);
+    REMOVE_TMPFILE(qoob->real_file, is_tmpfile);
     free (qoob->real_file);
     qoob->real_file = NULL;
     return QOOB_ERROR_FD_OPEN;
@@ -598,7 +609,7 @@ qoob_usb_write (qoob_t *qoob,
 
     ret = lseek (fd, seek_to, SEEK_SET);
     if (ret < 0) {
-      REMOVE_FILE(qoob->real_file, is_tmpfile);
+      REMOVE_TMPFILE(qoob->real_file, is_tmpfile);
       close (fd);
       free (qoob->real_file);
       qoob->real_file = NULL;
@@ -639,7 +650,7 @@ qoob_usb_write (qoob_t *qoob,
 
         ret = lseek (fd, seek_to, SEEK_SET);
         if (ret < 0) {
-          REMOVE_FILE(qoob->real_file, is_tmpfile);
+          REMOVE_TMPFILE(qoob->real_file, is_tmpfile);
           close (fd);
           free (qoob->real_file);
           qoob->real_file = NULL;
@@ -654,7 +665,7 @@ qoob_usb_write (qoob_t *qoob,
 
       r = read (fd, buf+1, QOOB_PRO_MAX_BUFFER-1);
       if (r == -1) {
-        REMOVE_FILE(qoob->real_file, is_tmpfile);
+        REMOVE_TMPFILE(qoob->real_file, is_tmpfile);
         close (fd);
         free (qoob->real_file);
         qoob->real_file = NULL;
@@ -663,7 +674,7 @@ qoob_usb_write (qoob_t *qoob,
 
       ret = send_data (qoob->devh, buf);
       if (ret < 0) {
-        REMOVE_FILE(qoob->real_file, is_tmpfile);
+        REMOVE_TMPFILE(qoob->real_file, is_tmpfile);
         close (fd);
         free (qoob->real_file);
         qoob->real_file = NULL;
@@ -677,7 +688,7 @@ qoob_usb_write (qoob_t *qoob,
   QOOB_END (qoob->devh, buf);
   receive_answer (qoob->devh, buf);
 
-  REMOVE_FILE(qoob->real_file, is_tmpfile);
+  REMOVE_TMPFILE(qoob->real_file, is_tmpfile);
   close (fd);
   free (qoob->real_file);
   qoob->real_file = NULL;
