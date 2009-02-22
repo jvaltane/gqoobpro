@@ -38,7 +38,7 @@ qoob_flasher_util_parse_options (qoob_flasher_t *flasher,
       {"verbose",no_argument, 0, 'v'},
       {"elf", no_argument, 0, 'l'},
       {"dol", no_argument, 0, 'd'},
-      {"gcb", no_argument, 0, 'g'},
+      {"qoob", no_argument, 0, 'q'},
       {"write",required_argument, 0, 'w'},
       {"read", required_argument, 0, 'r'},
       {"force-erase", required_argument, 0, 'f'},
@@ -48,7 +48,7 @@ qoob_flasher_util_parse_options (qoob_flasher_t *flasher,
 
     int index = 0;
      
-    char c = getopt_long (*argc, *argv, "hvldgw:r:f:e:", long_options, &index);
+    char c = getopt_long (*argc, *argv, "hvldqw:r:f:e:", long_options, &index);
      
     if (c == -1)
       break;
@@ -68,7 +68,7 @@ qoob_flasher_util_parse_options (qoob_flasher_t *flasher,
     case 'd':
       qoob_file_format_set (&flasher->qoob, QOOB_BINARY_TYPE_DOL);
       break;
-    case 'g':
+    case 'q':
       qoob_file_format_set (&flasher->qoob, QOOB_BINARY_TYPE_GCB);
       break;
     case 'w':
@@ -157,7 +157,7 @@ qoop_flasher_util_print_help (void)
   printf ("  -f, --force-erase=SLOT   erase one slot\n");
   printf ("  -l, --elf                Set ELF file format to write\n");
   printf ("  -d, --dol                Set DOL file format to write\n");
-  printf ("  -g, --gcb                Set GCB file format to write\n");
+  printf ("  -q, --qoob               Set GCB or Config file format to write.\n");
   printf ("\n");
 
 
@@ -173,7 +173,7 @@ qoop_flasher_util_print_help (void)
   printf ("  qoob-flasher -e0\n\n");
 
   printf (" Write qoob-bios to flash\n");
-  printf ("  qoob-flasher -g -w0 /tmp/qoob-bios.gcb\n\n");
+  printf ("  qoob-flasher -q -w0 /tmp/qoob-bios.gcb\n\n");
 
   printf ("See also the man page.\n\n");
 }

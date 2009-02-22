@@ -33,7 +33,7 @@ Write given GCB file to flash. Have to use. One of the
 .br
 .B\-d,\-\-dol, \-l,\-\-elf
 or
-.B \-g.\-\-gcb 
+.B \-q.\-\-qoob 
 must be used with write
 .
 .TP
@@ -57,8 +57,8 @@ ELF file format to be written
 DOL file format to be written
 .
 .TP
-.B \-g, \-\-gcb
-GCB (qoob) file format to be written
+.B \-q, \-\-qoob
+GCB or Qoob Config file format to be written
 .
 .TP
 .B \-v, \-\-verbose
@@ -85,7 +85,19 @@ qoob\-flasher \-e0
 .
 .TP
 .B Write bios to the flash.
-qoob\-flasher \-g \-w0 /tmp/qoob\-bios.gcb.
+qoob\-flasher \-q \-w0 /tmp/qoob\-bios.gcb.
+.
+.TP
+.B Read config from the flash and save it to /tmp.
+qoob\-flasher \-r31 /tmp/qoob\-config.gcb
+.
+.TP
+.B Erase qoob\-config from flash
+qoob\-flasher \-e31
+.
+.TP
+.B Write Qoob config to the flash.
+qoob\-flasher \-q \-w31 /tmp/qoob\-config.gcb.
 .
 .
 .SH AUTHOR 
