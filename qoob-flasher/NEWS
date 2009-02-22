@@ -1,0 +1,7 @@
+qoob-flasher 0.9
+
+Changes since 0.8:
+
+    * Qoob configure file format support
+    * Commandline options -g, --gcb changed to -q, --qoob.
+    * Force user to use -q, -d or -l option to write
