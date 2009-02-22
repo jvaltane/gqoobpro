@@ -57,7 +57,7 @@ qoob_file_format_parse (qoob_t *qoob,
     *type = QOOB_BINARY_TYPE_ELF;
 
   /* Qoob binary types */
-  /* QoobELF - This can be ELF or DOL */
+  /* QoobELF. This can be ELF or DOL */
   } else if (buf[0] == (char)0x45 && 
              buf[1] == (char)0x4c && 
              buf[2] == (char)0x46 &&
@@ -67,10 +67,15 @@ qoob_file_format_parse (qoob_t *qoob,
   } else if (buf[0] == (char)0x28 &&
              buf[1] == (char)0x43 && 
              buf[2] == (char)0x29 &&
-             buf[3] == (char) 0x20) {
+             buf[3] == (char)0x20) {
     *type = QOOB_BINARY_TYPE_GCB;
 
-  /* Reast are not supported (void) */
+  /* QoobCfg */
+  } else if (buf[0] == (char)0x51 &&
+             buf[1] == (char)0x43 && 
+             buf[2] == (char)0x46 &&
+             buf[3] == (char)0x47) {
+    *type = QOOB_BINARY_TYPE_CONFIG;
   }
 
   close (fd);
