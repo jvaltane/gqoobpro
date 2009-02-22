@@ -4,7 +4,7 @@ libqoob
 * check and fix function, variable and macro/define names
 * function pointers to emit commands progress info to applications
 * check all use cases
-* add more checks for input. Especially for writing
+* add more checks for input
 * documentation
 * check is read and write writable simplier
 * add background write (and read) support
