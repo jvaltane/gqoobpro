@@ -1,11 +1,9 @@
 -------
 libqoob
 -------
-* check and fix function, variable and macro/define names
-* function pointers to emit commands progress info to applications
+* some signaling system to emit commands progress info to applications
 * check all use cases
-* add more checks for input
 * documentation
-* check is read and write writable simplier
-* add background write (and read) support
-* make library to use libusb:s asyncronous calls.
+* check is read and write possible to make simpler way
+* add background picture write (and read) support
+* make library to use libusb:s asyncronous calls
