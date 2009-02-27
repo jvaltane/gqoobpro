@@ -42,12 +42,14 @@ main (int argc, char **argv)
 
   /* Initialize struct */
   if (flasher_init (&flasher)) {
+    fprintf (stderr, "Error: init flasher\n");
     return 1;
   }
 
   /* Initialize qoob */
   ret = qoob_sync_init (&flasher.qoob);
   if (ret != QOOB_ERROR_OK) {
+    fprintf (stderr, "Error: init qoob library\n");
     return 1;
   }
 
@@ -215,6 +217,8 @@ flasher_init (qoob_flasher_t *flasher)
   flasher->erase_to = 32;
 
   flasher->help = 0;
+  
+  return 0;
 }
 
 static void
