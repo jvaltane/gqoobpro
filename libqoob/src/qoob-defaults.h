@@ -46,6 +46,13 @@ typedef enum {
 #define FALSE 0
 #define TRUE !FALSE
 
+/* Syncronous callback types */
+typedef enum {
+  QOOB_SYNC_CALLBACK_READ = 0,
+  QOOB_SYNC_CALLBACK_WRITE,
+  QOOB_SYNC_CALLBACK_ERASE,
+  QOOB_SYNC_CALLBACK_LIST,
+} qoob_sync_callback_t;
 
 #endif
 

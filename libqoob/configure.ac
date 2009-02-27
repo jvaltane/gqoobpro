@@ -1,4 +1,4 @@
-AC_INIT(libqoob, 0.9, jvaltane@kapsi.fi)
+AC_INIT(libqoob, 0.10, jvaltane@kapsi.fi)
 AC_CONFIG_SRCDIR(Makefile.am)
 
 AM_INIT_AUTOMAKE
@@ -32,7 +32,7 @@ libqoob_CFLAGS="-I\$(top_srcdir)/src"
 AC_SUBST(libqoob_CFLAGS)
 AC_SUBST(libqoob_LIBS)
 
-case $host in
+case $target in
    *-darwin*) CFLAGS="$CFLAGS -DHAVE_DARWIN" ;;
 esac
 

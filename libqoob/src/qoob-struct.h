@@ -24,13 +24,6 @@
 #ifndef _QOOB_STRUCT_H_
 #define _QOOB_STRUCT_H_
 
-typedef enum {
-  QOOB_SYNC_CALLBACK_READ = 0,
-  QOOB_SYNC_CALLBACK_WRITE,
-  QOOB_SYNC_CALLBACK_ERASE,
-  QOOB_SYNC_CALLBACK_LIST,
-} qoob_sync_callback_t;
-
 /* Qoob and related structures */
 typedef struct QoobSlot qoob_slot_t;
 struct QoobSlot {
