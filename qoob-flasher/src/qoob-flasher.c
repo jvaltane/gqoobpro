@@ -227,8 +227,8 @@ qoob_callback (qoob_sync_callback_t type,
     break;
   case QOOB_SYNC_CALLBACK_READ_CONTENT:
     printf ("\rReading slot content %05dkb/%05dkb", 
-            progress, 
-            total);
+            progress/1024, 
+            total/1024);
     if (total == progress) {
       printf ("\n");
     }
@@ -237,7 +237,9 @@ qoob_callback (qoob_sync_callback_t type,
     printf ("\rWriting slot [%02d]/[%02d]\n", progress, total);
     break;
   case QOOB_SYNC_CALLBACK_WRITE_CONTENT:
-    printf ("\rWriting slot content %05dkb/%05dkb", progress, total);
+    printf ("\rWriting slot content %05dkb/%05dkb", 
+            progress/1024, 
+            total/1024);
     if (total == progress) {
       printf ("\n");
     }
