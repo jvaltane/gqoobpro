@@ -26,10 +26,6 @@
 #endif
 
 #include <qoob.h>
-#include <qoob-usb.h>
-#include <qoob-error.h>
-#include <qoob-file.h>
-#include <qoob-defaults.h>
 
 #include "qoob-flasher-util.h"
 
@@ -50,7 +46,7 @@ main (int argc, char **argv)
   }
 
   /* Initialize qoob */
-  ret = qoob_init (&flasher.qoob);
+  ret = qoob_sync_init (&flasher.qoob);
   if (ret != QOOB_ERROR_OK) {
     return 1;
   }
@@ -65,13 +61,13 @@ main (int argc, char **argv)
   }
 
   /* Check is device connected to USB */
-  ret = qoob_usb_find (&flasher.qoob);
+  ret = qoob_sync_usb_find (&flasher.qoob);
   if (ret != QOOB_ERROR_OK) {
     goto error;
   }
 
   /* Every command needs to list of slots */
-  ret = qoob_usb_list (&flasher.qoob, &flasher.slots);
+  ret = qoob_sync_usb_list (&flasher.qoob, &flasher.slots);
   if (ret != QOOB_ERROR_OK) {
     goto error;
   }
@@ -87,7 +83,7 @@ main (int argc, char **argv)
 
   /* Reading flashed bios or application to file */
   case FLASHER_COMMAND_READ: {
-    ret = qoob_usb_read (&flasher.qoob, flasher.file, flasher.slot_num);
+    ret = qoob_sync_usb_read (&flasher.qoob, flasher.file, flasher.slot_num);
     if (ret != QOOB_ERROR_OK) {
       goto error;
     }
@@ -97,13 +93,13 @@ main (int argc, char **argv)
   /* Writing file to flash */
   case FLASHER_COMMAND_WRITE: {
 
-    ret = qoob_usb_write (&flasher.qoob, flasher.file, flasher.slot_num);
+    ret = qoob_sync_usb_write (&flasher.qoob, flasher.file, flasher.slot_num);
     if (ret != QOOB_ERROR_OK) {
       goto error;
     }
 
     /* modified -> list */
-    ret = qoob_usb_list (&flasher.qoob, &flasher.slots);
+    ret = qoob_sync_usb_list (&flasher.qoob, &flasher.slots);
     if (ret != QOOB_ERROR_OK) {
       goto error;
     }
@@ -116,12 +112,12 @@ main (int argc, char **argv)
   /* Erasing slots from flash (safe)*/
   case FLASHER_COMMAND_ERASE: {
 
-    ret = qoob_usb_erase (&flasher.qoob, flasher.slot_num);
+    ret = qoob_sync_usb_erase (&flasher.qoob, flasher.slot_num);
     if (ret != QOOB_ERROR_OK) {
       goto error;
     }
     
-    ret = qoob_usb_list (&flasher.qoob, &flasher.slots);
+    ret = qoob_sync_usb_list (&flasher.qoob, &flasher.slots);
     if (ret != QOOB_ERROR_OK) {
       goto error;
     }
@@ -133,7 +129,7 @@ main (int argc, char **argv)
 
   /* Erasing slots from flash (not safe)*/
   case FLASHER_COMMAND_FORCE_ERASE: {
-    ret = qoob_usb_erase_forced (&flasher.qoob, 
+    ret = qoob_sync_usb_erase_forced (&flasher.qoob, 
                                  flasher.erase_from, 
                                  flasher.erase_to);
     if (ret != QOOB_ERROR_OK) {
@@ -141,7 +137,7 @@ main (int argc, char **argv)
     }
 
     /* Update slots */
-    ret = qoob_usb_list (&flasher.qoob, &flasher.slots);
+    ret = qoob_sync_usb_list (&flasher.qoob, &flasher.slots);
     if (ret != QOOB_ERROR_OK) {
       goto error;
     }
@@ -224,7 +220,7 @@ flasher_init (qoob_flasher_t *flasher)
 static void
 flasher_deinit (qoob_flasher_t *flasher)
 {
-  qoob_deinit (&flasher->qoob);
+  qoob_sync_deinit (&flasher->qoob);
 
   if (flasher->file != NULL) {
     free (flasher->file);

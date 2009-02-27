@@ -17,7 +17,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <qoob.h>
+#include "qoob.h"
 
 #ifndef _QOOB_FILE_FORMAT_H_
 #define _QOOB_FILE_FORMAT_H_

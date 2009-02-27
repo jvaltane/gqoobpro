@@ -23,7 +23,6 @@
 #include <string.h>
 
 #include <qoob.h>
-#include <qoob-usb.h>
 
 #include "qoob-flasher-util.h"
 
@@ -60,16 +59,16 @@ qoob_flasher_util_parse_options (qoob_flasher_t *flasher,
       flasher->help = 1;
       break;
     case 'v':
-      qoob_verbose_set (&flasher->qoob, 1);
+      qoob_sync_verbose_set (&flasher->qoob, 1);
       break;
     case 'l':
-      qoob_file_format_set (&flasher->qoob, QOOB_BINARY_TYPE_ELF);
+      qoob_sync_file_format_set (&flasher->qoob, QOOB_BINARY_TYPE_ELF);
       break;
     case 'd':
-      qoob_file_format_set (&flasher->qoob, QOOB_BINARY_TYPE_DOL);
+      qoob_sync_file_format_set (&flasher->qoob, QOOB_BINARY_TYPE_DOL);
       break;
     case 'q':
-      qoob_file_format_set (&flasher->qoob, QOOB_BINARY_TYPE_GCB);
+      qoob_sync_file_format_set (&flasher->qoob, QOOB_BINARY_TYPE_GCB);
       break;
     case 'w':
 
@@ -105,7 +104,7 @@ int
 qoob_flasher_util_test_options (qoob_flasher_t *flasher)
 {
   if (flasher->help == 1) {
-    qoob_usb_clear (&flasher->qoob);
+    qoob_sync_usb_clear (&flasher->qoob);
     qoop_flasher_util_print_help_and_exit (0);
   }
 
@@ -120,7 +119,7 @@ qoob_flasher_util_test_options (qoob_flasher_t *flasher)
       return 1;
     }
 
-    ret = qoob_file_format_get (&(flasher->qoob), &type);    
+    ret = qoob_sync_file_format_get (&(flasher->qoob), &type);    
     if ((flasher->command == FLASHER_COMMAND_WRITE) && 
         (ret != QOOB_ERROR_OK)) {
       return 1;

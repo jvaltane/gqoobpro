@@ -17,11 +17,11 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include "qoob.h"
+#include "qoob-struct.h"
 #include "qoob-error.h"
 
-#ifndef _QOOB_USB_H_
-#define _QOOB_USB_H_
+#ifndef _QOOB_SYNC_USB_H_
+#define _QOOB_SYNC_USB_H_
 
 #define QOOB_PRO_VENDOR 0x03eb
 #define QOOB_PRO_PRODUCT 0x0001
@@ -50,22 +50,22 @@
 
 #define QOOB_USB_CMD_ERASE "\x02"
 
-qoob_error_t qoob_usb_find (qoob_t *qoob);
-qoob_error_t qoob_usb_read (qoob_t *qoob,
-                            char *file,
-                            short int slotnum);
-qoob_error_t qoob_usb_write (qoob_t *qoob,
-                             char *file,
-                             short int slotnum);
-qoob_error_t qoob_usb_erase (qoob_t *qoob, 
-                             short int slot_num);
-qoob_error_t qoob_usb_erase_forced (qoob_t *qoob, 
-                                    short int slot_from, 
-                                    short int slot_to);
-qoob_error_t qoob_usb_list (qoob_t *qoob,
-                            qoob_slot_t **slots);
+qoob_error_t qoob_sync_usb_find (qoob_t *qoob);
+qoob_error_t qoob_sync_usb_read (qoob_t *qoob,
+                                 char *file,
+                                 short int slotnum);
+qoob_error_t qoob_sync_usb_write (qoob_t *qoob,
+                                  char *file,
+                                  short int slotnum);
+qoob_error_t qoob_sync_usb_erase (qoob_t *qoob, 
+                                  short int slot_num);
+qoob_error_t qoob_sync_usb_erase_forced (qoob_t *qoob, 
+                                         short int slot_from, 
+                                         short int slot_to);
+qoob_error_t qoob_sync_usb_list (qoob_t *qoob,
+                                 qoob_slot_t **slots);
 
-void qoob_usb_clear (qoob_t *qoob);
+void qoob_sync_usb_clear (qoob_t *qoob);
 
 #endif
 

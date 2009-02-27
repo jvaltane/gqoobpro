@@ -17,36 +17,28 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef _QOOB_DEFAULTS_H_
-#define _QOOB_DEFAULTS_H_
+#include <usb.h>
 
-/* Defaults listed */
+#include "qoob-struct.h"
+#include "qoob-error.h"
 
-/* Total QoobPro memory is 16Mbits (2048 bytes) */
-#define QOOB_PRO_SLOTS 32
-#define QOOB_PRO_SLOT_SIZE (QOOB_PRO_MAX_BUFFER*1024) /* 64 kbytes/slot */
-#define QOOB_PRO_TOTAL_SIZE (QOOB_PRO_SLOT_SIZE*QOOB_PRO_SLOTS)
+#ifndef _QOOB_SYNC_H_
+#define _QOOB_SYNC_H_
 
-#define QOOB_PRO_MAX_BUFFER 0x40 /* How much is written or read at once */
+qoob_error_t qoob_sync_init (qoob_t *qoob);
+void qoob_sync_deinit (qoob_t *qoob);
 
-#define QOOB_GCB_HEADER_SIZE 0x100 /* Size of the GCB file 'header' */
+qoob_error_t qoob_sync_file_format_set (qoob_t *qoob, binary_type_t type);
+qoob_error_t qoob_sync_file_format_get (qoob_t *qoob, binary_type_t *type);
+qoob_error_t qoob_sync_verbose_set (qoob_t *qoob, int v);
 
-#define QOOB_PREFIX_SEPARATOR '.'
-#define QOOB_DIRECTORY_SEPARATOR '/'
-
-typedef enum {
-  QOOB_BINARY_TYPE_VOID,
-  QOOB_BINARY_TYPE_CONFIG,
-  QOOB_BINARY_TYPE_BACKGROUND,
-  QOOB_BINARY_TYPE_GCB,
-  QOOB_BINARY_TYPE_ELF,
-  QOOB_BINARY_TYPE_DOL
-} binary_type_t;
-
-#define FALSE 0
-#define TRUE !FALSE
-
-
+/* callbacks */
+qoob_error_t qoob_sync_set_callback (qoob_t *qoob,
+                                     void (*cb)(qoob_sync_callback_t type, 
+                                                int r, 
+                                                int t, 
+                                                void *user_data),
+                                     void *user_data);
 #endif
 
 /* Emacs indentatation information

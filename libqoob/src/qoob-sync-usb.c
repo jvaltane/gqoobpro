@@ -24,12 +24,14 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
+#include <assert.h>
+
 #include <usb.h>
 
-#include "qoob.h"
+#include "qoob-struct.h"
 #include "qoob-defaults.h"
 #include "qoob-error.h"
-#include "qoob-usb.h"
+#include "qoob-sync-usb.h"
 
 #define EMPTY_SLOT_NAME "    Empty"
 #define CONFIG_SLOT_NAME "    Config"
@@ -47,12 +49,12 @@
 #define QOOB_READ_LOOP_HALF_WAY 522
 
 #define QOOB_WRITE_LOOP_DEFAULT (1024+16+2)
-#define QOOB_WRITE_LOOP_MISSING_BYTES 16
 #define QOOB_WRITE_LOOP_HALF_WAY 522
 
 #define QOOB_DEFAULT_SEEK 0x8000
 
 #define QOOB_START_OK 0x01
+
 
 #define QOOB_START(x,y)                            \
   do {                                              \
@@ -110,7 +112,7 @@ static qoob_error_t write_with_header_to_tmp_file (qoob_t *qoob,
                                                    size_t size);
 
 qoob_error_t
-qoob_usb_find (qoob_t *qoob)
+qoob_sync_usb_find (qoob_t *qoob)
 {
   struct usb_bus *bus;
 
@@ -161,13 +163,23 @@ qoob_usb_find (qoob_t *qoob)
 
 /* TODO: Check and reqrite asap with better knowledge about usb and flasher */
 qoob_error_t 
-qoob_usb_list (qoob_t *qoob, 
+qoob_sync_usb_list (qoob_t *qoob, 
                qoob_slot_t **slots)
 {
   char slot = 0;
   int tmpptr = 0;
   char buf[QOOB_PRO_MAX_BUFFER] = {0,};
   char tmpbuf[QOOB_PRO_MAX_BUFFER*4] = {0,};
+
+  if (qoob == NULL) {
+    return QOOB_ERROR_INPUT_NOT_VALID;;
+  }
+
+  assert (qoob->async == FALSE);
+
+  if (qoob->devh == NULL) {
+    return QOOB_ERROR_DEVICE_HANDLE_NOT_VALID;
+  }
 
   if (qoob->verbose > 0) {
     printf ("\nReading slots.\n");
@@ -254,7 +266,7 @@ qoob_usb_list (qoob_t *qoob,
 }
 
 qoob_error_t 
-qoob_usb_read (qoob_t *qoob,
+qoob_sync_usb_read (qoob_t *qoob,
                char *file,
                short int slotnum)
 {
@@ -267,6 +279,8 @@ qoob_usb_read (qoob_t *qoob,
   if (qoob == NULL) {
     return QOOB_ERROR_INPUT_NOT_VALID;;
   }
+
+  assert (qoob->async == FALSE);
 
   if (qoob->devh == NULL) {
     return QOOB_ERROR_DEVICE_HANDLE_NOT_VALID;
@@ -349,10 +363,9 @@ qoob_usb_read (qoob_t *qoob,
         return QOOB_ERROR_FD_WRITE;
       }
 
+      /* Seek to middle of the slot */
       if(((j+1)%QOOB_READ_LOOP_HALF_WAY) == 0) {
-#ifdef DEBUG
-        printf ("******** Reached half way of slot\n");
-#endif
+
         send_command (qoob->devh, 
                       QOOB_USB_CMD_READ_SLOT, 
                       QOOB_USB_CMD_READ_SLOT_ALL_HALF_WAY,
@@ -392,7 +405,7 @@ qoob_usb_read (qoob_t *qoob,
 }
 
 qoob_error_t 
-qoob_usb_erase_forced (qoob_t *qoob, 
+qoob_sync_usb_erase_forced (qoob_t *qoob, 
                        short int slot_from, 
                        short int slot_to)
 {
@@ -402,6 +415,8 @@ qoob_usb_erase_forced (qoob_t *qoob,
   if (qoob == NULL) {
     return QOOB_ERROR_INPUT_NOT_VALID;
   }
+
+  assert (qoob->async == FALSE);
 
   if (qoob->devh == NULL) {
     return QOOB_ERROR_DEVICE_HANDLE_NOT_VALID;
@@ -451,7 +466,7 @@ qoob_usb_erase_forced (qoob_t *qoob,
 }
 
 qoob_error_t 
-qoob_usb_erase (qoob_t *qoob, 
+qoob_sync_usb_erase (qoob_t *qoob, 
                 short int slot_num) 
 {
 
@@ -460,11 +475,13 @@ qoob_usb_erase (qoob_t *qoob,
     return QOOB_ERROR_INPUT_NOT_VALID;;
   }
 
+  assert (qoob->async == FALSE);
+
   if (qoob->slot[slot_num].first != TRUE) {
     return QOOB_ERROR_SLOT_NOT_FIRST;
   }
 
-  return qoob_usb_erase_forced (qoob, 
+  return qoob_sync_usb_erase_forced (qoob, 
                                  slot_num, 
                                  slot_num +
                                    qoob->slot[slot_num].slots_used - 
@@ -476,7 +493,7 @@ qoob_usb_erase (qoob_t *qoob,
 
 #define REMOVE_TMPFILE(rf, c) \
 do {\
-  if (c == TRUE) {\
+  if ((c) == TRUE) {                            \
     if ((unlink (rf)) != 0) {\
       fprintf (stderr, \
                "Error: Could not remove temporary file from /tmp!!!\n"); \
@@ -485,7 +502,7 @@ do {\
 } while (0)
 
 qoob_error_t 
-qoob_usb_write (qoob_t *qoob,
+qoob_sync_usb_write (qoob_t *qoob,
                 char *file,
                 short int slotnum)
 {
@@ -502,6 +519,8 @@ qoob_usb_write (qoob_t *qoob,
   if (qoob == NULL) {
     return QOOB_ERROR_INPUT_NOT_VALID;;
   }
+
+  assert (qoob->async == FALSE);
 
   if (qoob->devh == NULL) {
     return QOOB_ERROR_DEVICE_HANDLE_NOT_VALID;
@@ -566,7 +585,7 @@ qoob_usb_write (qoob_t *qoob,
   }
 
   /* Flash can have still some data so data is erased anyway */
-  ret = qoob_usb_erase_forced (qoob, slotnum, (slotnum+used_slots-1));
+  ret = qoob_sync_usb_erase_forced (qoob, slotnum, (slotnum+used_slots-1));
   if (ret != QOOB_ERROR_OK) {
     REMOVE_TMPFILE(qoob->real_file, is_tmpfile);
     free (qoob->real_file);
@@ -697,8 +716,11 @@ qoob_usb_write (qoob_t *qoob,
 }
 
 void
-qoob_usb_clear (qoob_t *qoob)
+qoob_sync_usb_clear (qoob_t *qoob)
 {
+  if (qoob == NULL)
+    return;
+
   if (qoob->devh != NULL) {
     usb_release_interface (qoob->devh, 0);
     usb_close (qoob->devh);
