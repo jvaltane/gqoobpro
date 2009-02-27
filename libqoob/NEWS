@@ -2,11 +2,12 @@ libqoob 0.10
 
 Changes since libqoob 0.9:
 
-    * Add sync in function names
-    * Some splitting to separate files done
+    * Add sync in function names. Describes better functionality of calls
+    * Change darvin test in configure.ac from host to target
+    * Some splitting to separate files
     * Add callback system to syncronous function calls
-    * Remove verbose
-    * Clean code a little bit
+    * Remove verbose things. Does not belong to library
+    * Change qoob.h just include other headers
 
 
 libqoob 0.9
