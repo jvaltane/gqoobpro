@@ -72,7 +72,7 @@ main (int argc, char **argv)
     goto error;
   }
 
-  qoob_sync_set_callback (&(flasher.qoob), qoob_callback, NULL);
+  qoob_sync_set_callback (&(flasher.qoob), qoob_callback, &flasher);
 
   /* Every command needs to list of slots */
   ret = qoob_sync_usb_list (&flasher.qoob, &flasher.slots);
@@ -226,7 +226,7 @@ qoob_callback (qoob_sync_callback_t type,
     printf ("\rReading slot [%02d]/[%02d]\n", progress, total);
     break;
   case QOOB_SYNC_CALLBACK_READ_CONTENT:
-    printf ("\rReading slot content [%05d]/[%05d]", 
+    printf ("\rReading slot content %05dkb/%05dkb", 
             progress, 
             total);
     if (total == progress) {
@@ -237,7 +237,7 @@ qoob_callback (qoob_sync_callback_t type,
     printf ("\rWriting slot [%02d]/[%02d]\n", progress, total);
     break;
   case QOOB_SYNC_CALLBACK_WRITE_CONTENT:
-    printf ("\rWriting slot content [%05d]/[%05d]", progress, total);
+    printf ("\rWriting slot content %05dkb/%05dkb", progress, total);
     if (total == progress) {
       printf ("\n");
     }
@@ -260,6 +260,7 @@ qoob_callback (qoob_sync_callback_t type,
     fprintf (stderr, 
              "ERROR: Unhandled callback.\n"
              "This is bug in qoob-flasher or libqoob\n");
+    flasher_deinit ((qoob_flasher_t *)user_data);
     exit (113);
     break;
   }

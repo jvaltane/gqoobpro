@@ -330,7 +330,6 @@ qoob_sync_usb_read (qoob_t *qoob,
                      slotnum+qoob->slot[slotnum].slots_used-1,
                      qoob->user_data);
     }
-    //    printf ("\nslot [%02d]\n", i);
 
     sret = lseek (fd, seek_to, SEEK_SET);
     if (sret < 0) {
@@ -358,13 +357,6 @@ qoob_sync_usb_read (qoob_t *qoob,
                        (QOOB_DEFAULT_SEEK*2)-1,
                        qoob->user_data);
       }
-
-      /*
-      if ((j%16)==0) {
-        printf (".");
-        fflush (stdout);
-      }
-      */
 
       ret = receive_answer (qoob->devh, buf);
       
@@ -417,11 +409,6 @@ qoob_sync_usb_read (qoob_t *qoob,
 
   close (fd);
 
-  /*
-  printf ("\n");
-  printf ("\nGCB file saved succesfully to '%s'.\n\n", file);
-  */
-
   return QOOB_ERROR_OK;
 }
 
@@ -467,10 +454,6 @@ qoob_sync_usb_erase_forced (qoob_t *qoob,
                      slot_to,
                      qoob->user_data);
     }
-    /*
-    printf (".");
-    fflush (stdout);
-    */
 
     QOOB_START (qoob->devh, buf);
     receive_answer (qoob->devh, buf);
@@ -686,14 +669,6 @@ qoob_sync_usb_write (qoob_t *qoob,
                        (QOOB_DEFAULT_SEEK*2)-1,
                        qoob->user_data);
       }
-
-      /*
-      if ((j%32)==0) {
-        printf (".");
-        fflush (stdout);
-      }
-      */
-
 
 #ifdef DEBUG
       printf ("[%d] written %ld, sbuf.st_size %ld\n", 
