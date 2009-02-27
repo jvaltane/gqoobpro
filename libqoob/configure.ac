@@ -1,5 +1,6 @@
 AC_INIT(libqoob, 0.10, jvaltane@kapsi.fi)
 AC_CONFIG_SRCDIR(Makefile.am)
+AC_CANONICAL_TARGET
 
 AM_INIT_AUTOMAKE
 AM_CONFIG_HEADER(config.h)
