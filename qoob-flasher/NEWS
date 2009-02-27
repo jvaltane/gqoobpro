@@ -1,3 +1,11 @@
+qoob-flasher 0.10
+
+Changes since 0.9:
+
+    * Use libqoob syncronous callback-system to get information about read, 
+      write and erase statuses
+
+
 qoob-flasher 0.9
 
 Changes since 0.8:

@@ -1,3 +1,14 @@
+libqoob 0.10
+
+Changes since libqoob 0.9:
+
+    * Add sync in function names
+    * Some splitting to separate files done
+    * Add callback system to syncronous function calls
+    * Remove verbose
+    * Clean code a little bit
+
+
 libqoob 0.9
 
 Changes since libqoob 0.8:
