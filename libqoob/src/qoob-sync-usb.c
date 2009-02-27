@@ -128,10 +128,6 @@ qoob_sync_usb_find (qoob_t *qoob)
           dev->descriptor.idProduct == QOOB_PRO_PRODUCT) {
         int ret;
 
-        if (qoob->verbose > 0) {
-          printf ("Qoob Pro found...\n");
-        }
-
         /* Get interface to us */
         devh = usb_open (dev);
 
@@ -148,10 +144,6 @@ qoob_sync_usb_find (qoob_t *qoob)
 
         qoob->dev = dev;
         qoob->devh = devh;
-
-        if (qoob->verbose > 0) {
-          printf ("Qoob Pro initializing OK...\n");
-        }
 
         return QOOB_ERROR_OK;
       }
@@ -181,10 +173,6 @@ qoob_sync_usb_list (qoob_t *qoob,
     return QOOB_ERROR_DEVICE_HANDLE_NOT_VALID;
   }
 
-  if (qoob->verbose > 0) {
-    printf ("\nReading slots.\n");
-  }
-
   /* TODO: implement system, which tries to 'connect' three times if fails */
 #if 0   /* Do not remove this part */
   /* tests */
@@ -207,8 +195,13 @@ qoob_sync_usb_list (qoob_t *qoob,
   /* Actual reading */
   while (1) {
     int i;
-    printf (".");
-    fflush (stdout);
+
+    if (qoob->sync_cb != NULL) {
+      qoob->sync_cb (QOOB_SYNC_CALLBACK_LIST, 
+                     slot+1, 
+                     QOOB_PRO_SLOTS,
+                     qoob->user_data);
+    }
 
     tmpptr = 0;
     QOOB_START (qoob->devh, buf);
@@ -258,7 +251,6 @@ qoob_sync_usb_list (qoob_t *qoob,
     if (slot > 31)
       break;
   }
-  printf ("\n");
 
   *slots = qoob->slot;
 
@@ -313,9 +305,11 @@ qoob_sync_usb_read (qoob_t *qoob,
     return QOOB_ERROR_FD_OPEN;
   }
 
+#ifdef DEBUG
   printf ("\nReading file '%s' starting at slot [%02d]", 
           file, 
           slotnum);
+#endif
 
   QOOB_START (qoob->devh, buf);
   receive_answer (qoob->devh, buf);
@@ -328,8 +322,15 @@ qoob_sync_usb_read (qoob_t *qoob,
                  qoob->slot[slotnum].slots_used); 
        i++) {
     off_t sret = 0;
+    int content = -1;
 
-    printf ("\nslot [%02d]\n", i);
+    if (qoob->sync_cb != NULL) {
+      qoob->sync_cb (QOOB_SYNC_CALLBACK_READ_SLOT, 
+                     i,
+                     slotnum+qoob->slot[slotnum].slots_used-1,
+                     qoob->user_data);
+    }
+    //    printf ("\nslot [%02d]\n", i);
 
     sret = lseek (fd, seek_to, SEEK_SET);
     if (sret < 0) {
@@ -350,10 +351,20 @@ qoob_sync_usb_read (qoob_t *qoob,
      * only 63 bytes is valid data to read.
      */
     for (j=0; j<QOOB_READ_LOOP_DEFAULT; j++) {
+      if (qoob->sync_cb != NULL) {
+        ++content;
+        qoob->sync_cb (QOOB_SYNC_CALLBACK_READ_CONTENT,
+                       (content*(QOOB_PRO_MAX_BUFFER-1)),
+                       (QOOB_DEFAULT_SEEK*2)-1,
+                       qoob->user_data);
+      }
+
+      /*
       if ((j%16)==0) {
         printf (".");
         fflush (stdout);
       }
+      */
 
       ret = receive_answer (qoob->devh, buf);
       
@@ -381,6 +392,7 @@ qoob_sync_usb_read (qoob_t *qoob,
           return QOOB_ERROR_FD_SEEK;
         }
         seek_to = seek_to + QOOB_DEFAULT_SEEK;
+        content = QOOB_READ_LOOP_HALF_WAY-2;
       }
     } /* for (j...*/
 
@@ -391,6 +403,13 @@ qoob_sync_usb_read (qoob_t *qoob,
       return QOOB_ERROR_FD_WRITE;
     }
 
+    if (qoob->sync_cb != NULL) {
+      qoob->sync_cb (QOOB_SYNC_CALLBACK_READ_CONTENT,
+                     (QOOB_DEFAULT_SEEK*2)-1,
+                     (QOOB_DEFAULT_SEEK*2)-1,
+                     qoob->user_data);
+    }
+
   } /* for (i...*/
 
   QOOB_END (qoob->devh, buf);
@@ -398,8 +417,10 @@ qoob_sync_usb_read (qoob_t *qoob,
 
   close (fd);
 
+  /*
   printf ("\n");
   printf ("\nGCB file saved succesfully to '%s'.\n\n", file);
+  */
 
   return QOOB_ERROR_OK;
 }
@@ -434,13 +455,22 @@ qoob_sync_usb_erase_forced (qoob_t *qoob,
     return QOOB_ERROR_SLOT_RANGE_NOT_VALID;
   }
 
+#ifdef DEBUG
   printf ("\nErasing flash starting at slot [%02d] to slot [%02d].\n", 
           slot_from, slot_to);
-
+#endif
   for (i=slot_from; i<=slot_to; i++) {
 
+    if (qoob->sync_cb != NULL) {
+      qoob->sync_cb (QOOB_SYNC_CALLBACK_ERASE,
+                     i,
+                     slot_to,
+                     qoob->user_data);
+    }
+    /*
     printf (".");
     fflush (stdout);
+    */
 
     QOOB_START (qoob->devh, buf);
     receive_answer (qoob->devh, buf);
@@ -555,7 +585,9 @@ qoob_sync_usb_write (qoob_t *qoob,
     is_tmpfile = TRUE;
   }
 
+#ifdef DEBUG
   printf ("Real file: '%s'\n", qoob->real_file);
+#endif
 
   /* FIXME: add more cases */
   if (stat (qoob->real_file, &sbuf) == -1) {
@@ -608,14 +640,22 @@ qoob_sync_usb_write (qoob_t *qoob,
   QOOB_START (qoob->devh, buf);
   receive_answer (qoob->devh, buf);
 
+#ifdef DEBUG
   printf ("\nWriting file '%s' starting at slot [%02d].\n", 
           file, slotnum);
+#endif
 
   for (i=slotnum; i<(slotnum+used_slots); i++) {
     size_t written = 0;
     int runned = FALSE;
+    int content = -1;
 
-    printf ("\nslot[%d]\n",i); 
+    if (qoob->sync_cb != NULL) {
+      qoob->sync_cb (QOOB_SYNC_CALLBACK_WRITE_SLOT, 
+                     i,
+                     slotnum+used_slots-1,
+                     qoob->user_data);
+    }
 
     memset (tmpbuf, 0, QOOB_PRO_MAX_BUFFER);
 
@@ -638,10 +678,21 @@ qoob_sync_usb_write (qoob_t *qoob,
 
     for (j=0; j<QOOB_WRITE_LOOP_DEFAULT; j++) {
       size_t r;
+
+      if (qoob->sync_cb != NULL) {
+        ++content;
+        qoob->sync_cb (QOOB_SYNC_CALLBACK_WRITE_CONTENT,
+                       (content*(QOOB_PRO_MAX_BUFFER-1)),
+                       (QOOB_DEFAULT_SEEK*2)-1,
+                       qoob->user_data);
+      }
+
+      /*
       if ((j%32)==0) {
         printf (".");
         fflush (stdout);
       }
+      */
 
 
 #ifdef DEBUG
@@ -680,6 +731,7 @@ qoob_sync_usb_write (qoob_t *qoob,
         printf ("seek_to: 0x%lx\n", (unsigned long int)seek_to);
 #endif
         seek_to = seek_to + QOOB_DEFAULT_SEEK;
+        content = QOOB_WRITE_LOOP_HALF_WAY-2;
       }
 
       r = read (fd, buf+1, QOOB_PRO_MAX_BUFFER-1);
@@ -702,6 +754,12 @@ qoob_sync_usb_write (qoob_t *qoob,
 
       written += (ret - 1);
     }
+    if (qoob->sync_cb != NULL) {
+      qoob->sync_cb (QOOB_SYNC_CALLBACK_WRITE_CONTENT,
+                     (QOOB_DEFAULT_SEEK*2)-1,
+                     (QOOB_DEFAULT_SEEK*2)-1,
+                     qoob->user_data);
+    }
   }
 
   QOOB_END (qoob->devh, buf);
@@ -711,6 +769,7 @@ qoob_sync_usb_write (qoob_t *qoob,
   close (fd);
   free (qoob->real_file);
   qoob->real_file = NULL;
+
   return QOOB_ERROR_OK;
 
 }

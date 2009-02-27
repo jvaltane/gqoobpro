@@ -44,12 +44,6 @@ qoob_sync_init (qoob_t *qoob)
   qoob->dev = NULL;
   qoob->devh = NULL;
 
-#ifdef DEBUG
-  qoob->verbose = 1;
-#else
-  qoob->verbose = 0;
-#endif
-
   qoob->real_file = NULL;
 
   for (i=0; i<QOOB_PRO_SLOTS; i++) { 
@@ -117,18 +111,6 @@ qoob_sync_file_format_get (qoob_t *qoob, binary_type_t *type)
   }
   *type = qoob->binary_type;
 
-  return 0;
-}
-
-
-qoob_error_t 
-qoob_sync_verbose_set (qoob_t *qoob, int v)
-{
-  if (qoob == NULL) {
-    return 1;
-  }
-  qoob->verbose = v;
-  
   return 0;
 }
 

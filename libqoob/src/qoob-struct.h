@@ -44,8 +44,6 @@ struct Qoob
   struct usb_device *dev;     /* USB device */
   usb_dev_handle *devh;       /* USB device handle */
 
-  int verbose;                /* verbose level*/
-
   char *real_file;                 /* tmp file to read or write */
 
   binary_type_t binary_type;  /* binary type to write */
@@ -53,10 +51,10 @@ struct Qoob
   qoob_slot_t slot[QOOB_PRO_SLOTS];
 
   /* Callbacks */
-  void (*sync_cb) (qoob_sync_callback_t type, 
-		   int progress, 
-		   int total, 
-		   void *user_data);
+  void (*sync_cb) (qoob_sync_callback_t type,
+                   int progress,
+                   int total,
+                   void *user_data);
   void *user_data;
 
   int async;

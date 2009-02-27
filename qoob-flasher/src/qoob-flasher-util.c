@@ -59,7 +59,7 @@ qoob_flasher_util_parse_options (qoob_flasher_t *flasher,
       flasher->help = 1;
       break;
     case 'v':
-      qoob_sync_verbose_set (&flasher->qoob, 1);
+      flasher->verbose = 1;
       break;
     case 'l':
       qoob_sync_file_format_set (&flasher->qoob, QOOB_BINARY_TYPE_ELF);

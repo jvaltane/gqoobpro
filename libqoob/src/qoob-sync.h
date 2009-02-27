@@ -30,7 +30,6 @@ void qoob_sync_deinit (qoob_t *qoob);
 
 qoob_error_t qoob_sync_file_format_set (qoob_t *qoob, binary_type_t type);
 qoob_error_t qoob_sync_file_format_get (qoob_t *qoob, binary_type_t *type);
-qoob_error_t qoob_sync_verbose_set (qoob_t *qoob, int v);
 
 /* callbacks */
 qoob_error_t qoob_sync_set_callback (qoob_t *qoob,
