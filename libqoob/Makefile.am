@@ -10,6 +10,6 @@ all-local: $(pcfiles)
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = $(pcfiles)
 
-EXTRA_DIST = libqoob.pc.in autogen.sh data/86-qoobpro.rules TODO README COPYING
+EXTRA_DIST = libqoob.pc.in autogen.sh data/86-qoobpro.rules TODO README COPYING NEWS ChangeLog
 
 CLEANFILES = $(pcfiles) $(pcfiles_uninstalled)

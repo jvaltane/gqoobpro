@@ -10,14 +10,14 @@ configure: configure-stamp
 configure-stamp:
 	./autogen.sh
 	dh_testdir
-	./configure $(confflags) --prefix=/usr
+	./configure $(confflags) --host=$(DEB_HOST_GNU_TYPE) --build=$(DEB_BUILD_GNU_TYPE) --prefix=/usr
 	touch configure-stamp
 
 build: configure-stamp build-stamp
 build-stamp:
-        dh_testdir
-        $(MAKE)
-        touch build-stamp
+	dh_testdir
+	$(MAKE)
+	touch build-stamp
 
 clean:
 	dh_testdir
@@ -32,7 +32,7 @@ install: build
 	dh_clean -k
 	dh_installdirs -plibqqoob-dev
 	dh_installdirs usr/lib -plibqoob
-	$(MAKE) install DESTDIR=`pwd`/debian/tmp
+	$(MAKE) install DESTDIR=`pwd`/debian/libqoob
 	dh_install --sourcedir=debian/tmp --list-missing
 
 binary-indep: build install
@@ -41,11 +41,14 @@ binary-arch: build install
 	dh_testdir
 	dh_testroot
 	dh_installdocs -A README TODO AUTHORS NEWS
+	dh_installchangelogs ChangeLog
 	dh_link
 	dh_strip
 	dh_compress
 	dh_fixperms
+	dh_makeshlibs -p libqoob -V 'libqoob (>=0.11)'
 	dh_installdeb
+	dh_shlibdeps -l liqoob -Ldebian/tmp/usr/lib
 	dh_gencontrol
 	dh_md5sums
 	dh_builddeb
