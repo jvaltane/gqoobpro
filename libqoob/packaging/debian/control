@@ -10,7 +10,7 @@ Version: 0.11
 Section: libs
 Priority: optional
 Architecture: any 
-Depends: ${shlibs:depends}, udev (>= 0.105), module-init-tools (>=3.3)
+Depends: ${shlibs:Depends}, udev (>= 0.105), module-init-tools (>=3.3)
 Maintainer: Joni Valtanen <jvaltane@kapsi.fi>
 Description: library to operate with Nintendo Gamecube Qoob Pro mod-chip
  .
@@ -22,7 +22,7 @@ Description: library to operate with Nintendo Gamecube Qoob Pro mod-chip
 Package: libqoob-dev
 Section: libdevel
 Architecture: any
-Depends: libqoob (= ${Source-Version}), ${shlibs:Depends}
+Depends: libqoob0 (= ${Source-Version}), ${shlibs:Depends}
 Description: development files for libqoob
  .
  libqoob is library to operate easily with Nintendo Gamecube Qoob Pro

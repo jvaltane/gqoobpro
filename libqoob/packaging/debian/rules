@@ -31,9 +31,10 @@ install: build
 	dh_testroot
 	dh_clean -k
 	dh_installdirs -plibqqoob-dev
-	dh_installdirs usr/lib -plibqoob
-	$(MAKE) install DESTDIR=`pwd`/debian/libqoob
-	dh_install --sourcedir=debian/tmp --list-missing
+	dh_installdirs usr/lib etc/modprobe.d etc/udev/rules.d -plibqoob0
+	$(MAKE) install DESTDIR=`pwd`/debian/libqoob0
+	$(MAKE) deb-install
+	dh_install --sourcedir=debian/libqoob0 --list-missing
 
 binary-indep: build install
 
@@ -46,10 +47,10 @@ binary-arch: build install
 	dh_strip
 	dh_compress
 	dh_fixperms
-	dh_makeshlibs -p libqoob -V 'libqoob (>=0.11)'
+	dh_makeshlibs -p libqoob0 -V 'libqoob0 (>=0.11)'
 	dh_installdeb
-	dh_shlibdeps -l liqoob -Ldebian/tmp/usr/lib
-	dh_gencontrol
+	dh_shlibdeps -l libqoob0 -Ldebian/libqoob0/usr/lib
+	dh_gencontrol -- -Tdebian/libqoob0.substvars
 	dh_md5sums
 	dh_builddeb
 
