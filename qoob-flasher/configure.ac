@@ -1,4 +1,4 @@
-AC_INIT(qoob-flasher, 0.10, jvaltane@kapsi.fi)
+AC_INIT(qoob-flasher, 0.11, jvaltane@kapsi.fi)
 AC_CONFIG_SRCDIR(Makefile.am)
 
 AM_INIT_AUTOMAKE
@@ -14,7 +14,7 @@ if test -z "$PKG_CONFIG" ; then
   AC_MSG_ERROR( pkg-config is required )
 fi
 
-PKG_CHECK_MODULES(libqoob, [libqoob >= 0.10], , AC_MSG_ERROR( libqoob >= 0.10 is required ))
+PKG_CHECK_MODULES(libqoob, [libqoob >= 0.11], , AC_MSG_ERROR( libqoob >= 0.11 is required ))
 AC_SUBST(libqoob_CFLAGS)
 AC_SUBST(libqoob_LIBS)
 

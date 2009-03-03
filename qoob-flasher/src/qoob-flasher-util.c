@@ -154,7 +154,6 @@ qoop_flasher_util_print_help (void)
   printf ("  -h, --help               display this help and exits\n");
   printf ("  -v, --verbose            gives more information what happens\n");
   printf ("  -s, --slot-list          prints slot list after write or erase\n");
-  printf ("  -l, --list               lists slots in flash\n");
   printf ("  -w, --write=SLOT         writes given file to flash. Use with -d,-l or -g\n");
   printf ("  -r, --read=SLOT          reads gcb file from flash to given file\n");
   printf ("  -e, --erase=SLOT         erase appilacion in flash\n");
