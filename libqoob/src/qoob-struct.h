@@ -17,12 +17,12 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#ifndef _QOOB_STRUCT_H_
+#define _QOOB_STRUCT_H_
+
 #include <usb.h>
 
 #include "qoob-defaults.h"
-
-#ifndef _QOOB_STRUCT_H_
-#define _QOOB_STRUCT_H_
 
 /* Qoob and related structures */
 typedef struct QoobSlot qoob_slot_t;
@@ -32,7 +32,7 @@ struct QoobSlot {
    */
   char name[QOOB_PRO_MAX_BUFFER*5];
   unsigned short int slots_used;    /* How many slots application uses */
-  unsigned short int first;         /* Tells is slot applications first slot */
+  qoob_boolean_t first;         /* Tells is slot applications first slot */
 
   binary_type_t type;
 };
@@ -57,7 +57,7 @@ struct Qoob
                    void *user_data);
   void *user_data;
 
-  int async;
+  qoob_boolean_t async;
 };
 
 #endif

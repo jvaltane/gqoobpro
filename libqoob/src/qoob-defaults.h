@@ -20,6 +20,12 @@
 #ifndef _QOOB_DEFAULTS_H_
 #define _QOOB_DEFAULTS_H_
 
+/* Common typedefs */
+typedef enum {
+  QOOB_FALSE = 0,
+  QOOB_TRUE = !QOOB_FALSE
+} qoob_boolean_t;
+
 /* Defaults listed */
 
 /* Total QoobPro memory is 16Mbits (2048 bytes) */
@@ -42,9 +48,6 @@ typedef enum {
   QOOB_BINARY_TYPE_ELF,
   QOOB_BINARY_TYPE_DOL
 } binary_type_t;
-
-#define QOOB_FALSE 0
-#define QOOB_TRUE !QOOB_FALSE
 
 /* Syncronous callback types */
 typedef enum {

@@ -527,7 +527,7 @@ qoob_sync_usb_write (qoob_t *qoob,
   off_t seek_to = 0;
   qoob_error_t err;
   struct stat sbuf;
-  int is_tmpfile = QOOB_FALSE;
+  qoob_boolean_t is_tmpfile = QOOB_FALSE;
 
   if (qoob == NULL) {
     return QOOB_ERROR_INPUT_NOT_VALID;;
@@ -630,7 +630,7 @@ qoob_sync_usb_write (qoob_t *qoob,
 
   for (i=slotnum; i<(slotnum+used_slots); i++) {
     size_t written = 0;
-    int runned = QOOB_FALSE;
+    qoob_boolean_t runned = QOOB_FALSE;
     int content = -1;
 
     if (qoob->sync_cb != NULL) {

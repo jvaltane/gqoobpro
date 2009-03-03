@@ -34,7 +34,10 @@
 #include "qoob-sync.h"
 #include "qoob-sync-usb.h"
 
-/* Asyncronous api 
+/* Future asyncronous API
+
+ TODO: Will done after syncronous one is in better than ok.
+
 #include "qoob-async.h"
 #include "qoob-async-usb.h"
 */
