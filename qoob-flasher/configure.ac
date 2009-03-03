@@ -9,6 +9,11 @@ AC_PROG_CC
 
 CFLAGS="$CFLAGS -Werror -Wall"
 
+AC_PATH_PROG(PKG_CONFIG, pkg-config)
+if test -z "$PKG_CONFIG" ; then
+  AC_MSG_ERROR( pkg-config is required )
+fi
+
 PKG_CHECK_MODULES(libqoob, [libqoob >= 0.10], , AC_MSG_ERROR( libqoob >= 0.10 is required ))
 AC_SUBST(libqoob_CFLAGS)
 AC_SUBST(libqoob_LIBS)
