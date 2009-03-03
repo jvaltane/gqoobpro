@@ -30,7 +30,7 @@ install: build
 	dh_testdir
 	dh_testroot
 	dh_clean -k
-	dh_installdirs -plibqqoob-dev
+	dh_installdirs -plibqoob-dev
 	dh_installdirs usr/lib etc/modprobe.d etc/udev/rules.d -plibqoob0
 	$(MAKE) install DESTDIR=`pwd`/debian/libqoob0
 	$(MAKE) deb-install
