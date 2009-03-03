@@ -47,7 +47,7 @@ qoob_sync_init (qoob_t *qoob)
   qoob->real_file = NULL;
 
   for (i=0; i<QOOB_PRO_SLOTS; i++) { 
-    qoob->slot[i].first = TRUE;
+    qoob->slot[i].first = QOOB_TRUE;
     qoob->slot[i].slots_used = 0;
     qoob->slot[i].type = QOOB_BINARY_TYPE_VOID;
   }
@@ -63,7 +63,7 @@ qoob_sync_init (qoob_t *qoob)
 
   qoob->user_data = NULL;
 
-  qoob->async = FALSE;
+  qoob->async = QOOB_FALSE;
 
   return 0;
 }
@@ -82,7 +82,7 @@ qoob_sync_deinit (qoob_t *qoob)
   qoob->devh = NULL;
   
   for (i=0; i<QOOB_PRO_SLOTS; i++) { 
-    qoob->slot[i].first = TRUE;
+    qoob->slot[i].first = QOOB_TRUE;
     qoob->slot[i].slots_used = 0;
     qoob->slot[i].type = QOOB_BINARY_TYPE_VOID;
   }

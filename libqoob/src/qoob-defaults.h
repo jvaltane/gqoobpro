@@ -43,8 +43,8 @@ typedef enum {
   QOOB_BINARY_TYPE_DOL
 } binary_type_t;
 
-#define FALSE 0
-#define TRUE !FALSE
+#define QOOB_FALSE 0
+#define QOOB_TRUE !QOOB_FALSE
 
 /* Syncronous callback types */
 typedef enum {

@@ -167,7 +167,7 @@ qoob_sync_usb_list (qoob_t *qoob,
     return QOOB_ERROR_INPUT_NOT_VALID;;
   }
 
-  assert (qoob->async == FALSE);
+  assert (qoob->async == QOOB_FALSE);
 
   if (qoob->devh == NULL) {
     return QOOB_ERROR_DEVICE_HANDLE_NOT_VALID;
@@ -272,7 +272,7 @@ qoob_sync_usb_read (qoob_t *qoob,
     return QOOB_ERROR_INPUT_NOT_VALID;;
   }
 
-  assert (qoob->async == FALSE);
+  assert (qoob->async == QOOB_FALSE);
 
   if (qoob->devh == NULL) {
     return QOOB_ERROR_DEVICE_HANDLE_NOT_VALID;
@@ -286,7 +286,7 @@ qoob_sync_usb_read (qoob_t *qoob,
     return QOOB_ERROR_SLOT_OUT_OF_RANGE;
   }
 
-  if (qoob->slot[slotnum].first != TRUE) {
+  if (qoob->slot[slotnum].first != QOOB_TRUE) {
     return QOOB_ERROR_SLOT_NOT_FIRST;
   }
 
@@ -424,7 +424,7 @@ qoob_sync_usb_erase_forced (qoob_t *qoob,
     return QOOB_ERROR_INPUT_NOT_VALID;
   }
 
-  assert (qoob->async == FALSE);
+  assert (qoob->async == QOOB_FALSE);
 
   if (qoob->devh == NULL) {
     return QOOB_ERROR_DEVICE_HANDLE_NOT_VALID;
@@ -488,9 +488,9 @@ qoob_sync_usb_erase (qoob_t *qoob,
     return QOOB_ERROR_INPUT_NOT_VALID;;
   }
 
-  assert (qoob->async == FALSE);
+  assert (qoob->async == QOOB_FALSE);
 
-  if (qoob->slot[slot_num].first != TRUE) {
+  if (qoob->slot[slot_num].first != QOOB_TRUE) {
     return QOOB_ERROR_SLOT_NOT_FIRST;
   }
 
@@ -506,7 +506,7 @@ qoob_sync_usb_erase (qoob_t *qoob,
 
 #define REMOVE_TMPFILE(rf, c) \
 do {\
-  if ((c) == TRUE) {                            \
+  if ((c) == QOOB_TRUE) {                            \
     if ((unlink (rf)) != 0) {\
       fprintf (stderr, \
                "Error: Could not remove temporary file from /tmp!!!\n"); \
@@ -527,13 +527,13 @@ qoob_sync_usb_write (qoob_t *qoob,
   off_t seek_to = 0;
   qoob_error_t err;
   struct stat sbuf;
-  int is_tmpfile = FALSE;
+  int is_tmpfile = QOOB_FALSE;
 
   if (qoob == NULL) {
     return QOOB_ERROR_INPUT_NOT_VALID;;
   }
 
-  assert (qoob->async == FALSE);
+  assert (qoob->async == QOOB_FALSE);
 
   if (qoob->devh == NULL) {
     return QOOB_ERROR_DEVICE_HANDLE_NOT_VALID;
@@ -565,7 +565,7 @@ qoob_sync_usb_write (qoob_t *qoob,
       qoob->real_file = NULL;
       return err;
     }
-    is_tmpfile = TRUE;
+    is_tmpfile = QOOB_TRUE;
   }
 
 #ifdef DEBUG
@@ -630,7 +630,7 @@ qoob_sync_usb_write (qoob_t *qoob,
 
   for (i=slotnum; i<(slotnum+used_slots); i++) {
     size_t written = 0;
-    int runned = FALSE;
+    int runned = QOOB_FALSE;
     int content = -1;
 
     if (qoob->sync_cb != NULL) {
@@ -677,10 +677,10 @@ qoob_sync_usb_write (qoob_t *qoob,
 
       memset (buf, 0, QOOB_PRO_MAX_BUFFER);
 
-      if ((runned == FALSE) && 
+      if ((runned == QOOB_FALSE) && 
           (((j+1)%QOOB_WRITE_LOOP_HALF_WAY) == 0)) {
         off_t ret = 0;
-        runned = TRUE;
+        runned = QOOB_TRUE;
 
 #ifdef DEBUG
         printf ("About half way!\n");
@@ -924,7 +924,7 @@ add_to_slot_array (qoob_t *qoob,
                 strlen (qoob->slot[slot_number+i].name), 
               continuing, 
               strlen (continuing));
-      qoob->slot[slot_number+i].first = FALSE;
+      qoob->slot[slot_number+i].first = QOOB_FALSE;
     }
   }
 }
