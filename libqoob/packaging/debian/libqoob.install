@@ -1,0 +1,2 @@
+/etc/udev/rules.d/86-qoobpro.rules
+/etc/modprobe.d/qoobpro-usbhid-ignore
