@@ -65,6 +65,10 @@ GCB or Qoob Config file format to be written
 Gives more information what happens when managing flash
 .
 .TP
+.B \-s, \-\-slot-list
+Prints slot list after write or erase
+.
+.TP
 .B \-h, \-\-help
 Display help and exits
 .
@@ -88,6 +92,10 @@ qoob\-flasher \-e0
 qoob\-flasher \-q \-w0 /tmp/qoob\-bios.gcb.
 .
 .TP
+.B Write bios to the flash and list it after flashing.
+qoob\-flasher \-s \-q \-w0 /tmp/qoob\-bios.gcb.
+.
+.TP
 .B Read config from the flash and save it to /tmp.
 qoob\-flasher \-r31 /tmp/qoob\-config.gcb
 .
@@ -98,6 +106,15 @@ qoob\-flasher \-e31
 .TP
 .B Write Qoob config to the flash.
 qoob\-flasher \-q \-w31 /tmp/qoob\-config.gcb.
+.
+.TP
+.B Read config from the flash and save it to /tmp. Gives little information about where is written and is this success.
+qoob\-flasher \-v \-r31 /tmp/qoob\-config.gcb
+.
+.TP
+.B Read config from the flash and save it to /tmp. Gives also information about progress of the command.
+qoob\-flasher \-vv \-r31 /tmp/qoob\-config.gcb
+.
 .
 .
 .SH AUTHOR 

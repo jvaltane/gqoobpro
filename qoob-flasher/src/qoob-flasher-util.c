@@ -35,6 +35,7 @@ qoob_flasher_util_parse_options (qoob_flasher_t *flasher,
     static struct option long_options[] = {
       {"help", no_argument, 0, 'h'},
       {"verbose",no_argument, 0, 'v'},
+      {"slot-list",no_argument, 0, 's'},
       {"elf", no_argument, 0, 'l'},
       {"dol", no_argument, 0, 'd'},
       {"qoob", no_argument, 0, 'q'},
@@ -47,7 +48,7 @@ qoob_flasher_util_parse_options (qoob_flasher_t *flasher,
 
     int index = 0;
      
-    char c = getopt_long (*argc, *argv, "hvldqw:r:f:e:", long_options, &index);
+    char c = getopt_long (*argc, *argv, "hvsldqw:r:f:e:", long_options, &index);
      
     if (c == -1)
       break;
@@ -56,10 +57,13 @@ qoob_flasher_util_parse_options (qoob_flasher_t *flasher,
     case 0:
       break;
     case 'h':
-      flasher->help = 1;
+      flasher->help = QOOB_TRUE;
       break;
     case 'v':
-      flasher->verbose = 1;
+      flasher->verbose++;
+      break;
+    case 's':
+      flasher->list = QOOB_TRUE;
       break;
     case 'l':
       qoob_sync_file_format_set (&flasher->qoob, QOOB_BINARY_TYPE_ELF);
@@ -103,7 +107,7 @@ qoob_flasher_util_parse_options (qoob_flasher_t *flasher,
 int 
 qoob_flasher_util_test_options (qoob_flasher_t *flasher)
 {
-  if (flasher->help == 1) {
+  if (flasher->help == QOOB_TRUE) {
     qoob_sync_usb_clear (&flasher->qoob);
     qoop_flasher_util_print_help_and_exit (0);
   }
@@ -149,6 +153,7 @@ qoop_flasher_util_print_help (void)
 
   printf ("  -h, --help               display this help and exits\n");
   printf ("  -v, --verbose            gives more information what happens\n");
+  printf ("  -s, --slot-list          prints slot list after write or erase\n");
   printf ("  -l, --list               lists slots in flash\n");
   printf ("  -w, --write=SLOT         writes given file to flash. Use with -d,-l or -g\n");
   printf ("  -r, --read=SLOT          reads gcb file from flash to given file\n");

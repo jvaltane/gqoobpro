@@ -44,6 +44,7 @@ struct QoobFlasher
   flasher_command_t command;
 
   int help;
+  int list;
   int verbose;
 };
 
