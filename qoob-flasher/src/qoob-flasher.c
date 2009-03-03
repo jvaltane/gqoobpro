@@ -353,7 +353,7 @@ flasher_init (qoob_flasher_t *flasher)
 
   flasher->help = QOOB_FALSE;
   flasher->list = QOOB_FALSE;
-  flasher->verbose = QOOB_FALSE;
+  flasher->verbose = 0;
   
   return 0;
 }

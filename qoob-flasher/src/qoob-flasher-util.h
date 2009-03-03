@@ -43,9 +43,10 @@ struct QoobFlasher
 
   flasher_command_t command;
 
-  int help;
-  int list;
-  int verbose;
+  qoob_boolean_t help;
+  qoob_boolean_t list;
+
+  unsigned int verbose;
 };
 
 void qoob_flasher_util_parse_options (qoob_flasher_t *flasher, 
