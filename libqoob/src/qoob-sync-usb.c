@@ -936,7 +936,7 @@ write_with_header_to_tmp_file (qoob_t *qoob,
 {
   size_t i = 4;
   int fd, fd_orig;
-  char *new_name;
+  char new_name[] = TMP_DIR "/qoob-XXXXXX";
   size_t w;
   size_t r;
   char *end = NULL;
@@ -953,12 +953,7 @@ write_with_header_to_tmp_file (qoob_t *qoob,
   
   end = file + strlen (file)-1;
 
-  /* tmpnam might be unsafe */
-  new_name = tmpnam (NULL);
-
-  fd = open (new_name,
-             (O_WRONLY|O_CREAT|O_TRUNC), 
-             (S_IRUSR|S_IWUSR|S_IRGRP|S_IROTH));
+  fd = mkstemp (new_name);
 
   fd_orig = open (file, O_RDONLY);
   if (fd_orig == -1) {

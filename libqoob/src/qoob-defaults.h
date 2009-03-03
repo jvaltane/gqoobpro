@@ -56,6 +56,8 @@ typedef enum {
   QOOB_SYNC_CALLBACK_LIST,
 } qoob_sync_callback_t;
 
+#define TMP_DIR "/tmp"
+
 #endif
 
 /* Emacs indentatation information
