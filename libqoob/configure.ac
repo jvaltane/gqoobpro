@@ -11,6 +11,11 @@ AC_PROG_LIBTOOL
 
 CFLAGS="$CFLAGS -Werror -Wall"
 
+AC_PATH_PROG(PKG_CONFIG, pkg-config)
+if test -z "$PKG_CONFIG" ; then
+  AC_MSG_ERROR( pkg-config is required )
+fi
+
 PKG_CHECK_MODULES(libusb, [libusb >= 0.1.12], , AC_MSG_ERROR( libusb >= 0.1-12 is required ))
 AC_SUBST(libusb_CFLAGS)
 AC_SUBST(libusb_LIBS)
