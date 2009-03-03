@@ -1,0 +1,2 @@
+# to ignore Qoob Pro
+options usbhid quirks=0x03eb:0x0001:0x00000004
