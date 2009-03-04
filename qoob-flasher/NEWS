@@ -2,6 +2,7 @@ qoob-flasher 0.11
 
 Changes since 0.10:
 
+    * Debian packaging
     * Add verbose something to do. When verbose is one start and success is
       showed. When it is more than one show progress of the command. If there
       is no verbose.

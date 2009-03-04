@@ -2,6 +2,7 @@ libqoob 0.11
 
 Changes since libqoob 0.10:
 
+    * Debian packaging
     * Add test to pkg-config in configure
     * Change TRUE and FALSE to enum called qoob_boolean_t and names changed 
       QOOB_TRUE and QOOB_FALSE
