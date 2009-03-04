@@ -1,2 +1,5 @@
-debian/tmp/etc/udev/rules.d/86-qoobpro.rules /etc/udev/rules.d/
-debian/tmp/etc/modprobe.d/qoobpro-usbhid-ignore /etc/modprobe.d/
+/etc/udev/rules.d/86-qoobpro.rules /etc/udev/rules.d/
+/etc/modprobe.d/qoobpro-usbhid-ignore /etc/modprobe.d/
+/usr/lib/*.so.* /usr/lib/
+/usr/lib/*.a /usr/lib/
+/usr/lib/*.la /usr/lib/
