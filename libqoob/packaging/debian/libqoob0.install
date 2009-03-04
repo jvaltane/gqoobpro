@@ -1,0 +1,2 @@
+debian/tmp/etc/udev/rules.d/86-qoobpro.rules /etc/udev/rules.d/
+debian/tmp/etc/modprobe.d/qoobpro-usbhid-ignore /etc/modprobe.d/

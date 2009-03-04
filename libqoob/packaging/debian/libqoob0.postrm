@@ -5,7 +5,7 @@ if [ "$1" = configure ]; then
      /etc/init.d/udev restart
   fi
 
-  if [ -x "/sbin/modprobe" && -x "/sbin/rmmod" ]; then
+  if [ -x "/sbin/modprobe" -a -x "/sbin/rmmod" ]; then
      echo "Reloading usbhid module..."
      /sbin/rmmod usbhid
      /sbin/modprobe usbhid

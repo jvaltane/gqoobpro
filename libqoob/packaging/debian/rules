@@ -8,9 +8,10 @@ confflags += --disable-debug
 configure: configure-stamp
 
 configure-stamp:
-	./autogen.sh
 	dh_testdir
-	./configure $(confflags) --host=$(DEB_HOST_GNU_TYPE) --build=$(DEB_BUILD_GNU_TYPE) --prefix=/usr
+	$(CURDIR)/autogen.sh
+	CFLAGS="$(CFLAGS)" $(CURDIR)/configure $(confflags) \
+		--host=$(DEB_HOST_GNU_TYPE) --build=$(DEB_BUILD_GNU_TYPE) --prefix=/usr
 	touch configure-stamp
 
 build: configure-stamp build-stamp
@@ -30,11 +31,11 @@ install: build
 	dh_testdir
 	dh_testroot
 	dh_clean -k
-	dh_installdirs -plibqoob-dev
+	dh_installdirs usr/include -plibqoob-dev
 	dh_installdirs usr/lib etc/modprobe.d etc/udev/rules.d -plibqoob0
-	$(MAKE) install DESTDIR=`pwd`/debian/libqoob0
+	$(MAKE) install DESTDIR=`pwd`/debian/tmp
 	$(MAKE) deb-install
-	dh_install --sourcedir=debian/libqoob0 --list-missing
+	dh_install --sourcedir=debian/tmp --list-missing
 
 binary-indep: build install
 
@@ -49,7 +50,7 @@ binary-arch: build install
 	dh_fixperms
 	dh_makeshlibs -p libqoob0 -V 'libqoob0 (>=0.11)'
 	dh_installdeb
-	dh_shlibdeps -l libqoob0 -Ldebian/libqoob0/usr/lib
+	dh_shlibdeps -l libqoob0 -Ldebian/tmp/usr/lib
 	dh_gencontrol -- -Tdebian/libqoob0.substvars
 	dh_md5sums
 	dh_builddeb

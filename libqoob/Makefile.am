@@ -11,10 +11,10 @@ pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = $(pcfiles)
 
 deb-install:
-	mkdir -p $(top_srcdir)/debian/libqoob0/etc/udev/rules.d
-	mkdir -p $(top_srcdir)/debian/libqoob0/etc/modprobe.d
-	install -c --mode=644 $(top_srcdir)/data/86-qoobpro.rules $(top_srcdir)/debian/libqoob0/etc/udev/rules.d/
-	install -c --mode=644 $(top_srcdir)/data/qoobpro-usbhid-ignore $(top_srcdir)/debian/libqoob0/etc/modprobe.d/
+	mkdir -p $(top_srcdir)/debian/tmp/etc/udev/rules.d
+	mkdir -p $(top_srcdir)/debian/tmp/etc/modprobe.d
+	install -c --mode=644 $(top_srcdir)/data/86-qoobpro.rules $(top_srcdir)/debian/tmp/etc/udev/rules.d/
+	install -c --mode=644 $(top_srcdir)/data/qoobpro-usbhid-ignore $(top_srcdir)/debian/tmp/etc/modprobe.d/
 
 EXTRA_DIST = libqoob.pc.in autogen.sh data/86-qoobpro.rules \
 	data/qoobpro-usbhid-ignore TODO README COPYING NEWS ChangeLog \
