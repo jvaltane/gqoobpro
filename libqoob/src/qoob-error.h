@@ -38,7 +38,8 @@ typedef enum {
   QOOB_ERROR_FD_WRITE,
   QOOB_ERROR_FD_SEEK,
   QOOB_ERROR_SEND_DATA,
-  QOOB_ERROR_TRYING_TO_OVERWRITE
+  QOOB_ERROR_TRYING_TO_OVERWRITE,
+  QOOB_ERROR_NOT_SUPPORTED_FILE_FORMAT
 } qoob_error_t;
 
 const char *qoob_error_to_string (qoob_error_t e);

@@ -59,6 +59,8 @@ qoob_error_to_string (qoob_error_t e)
     return "Sending data to device fails!!!";
   case QOOB_ERROR_TRYING_TO_OVERWRITE:
     return "Trying to overwrite existing data!!!";
+  case QOOB_ERROR_NOT_SUPPORTED_FILE_FORMAT:
+    return "File format is not supported!!!";
   default:
     break;
   }
