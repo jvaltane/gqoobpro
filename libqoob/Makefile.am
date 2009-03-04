@@ -20,5 +20,7 @@ EXTRA_DIST = libqoob.pc.in autogen.sh data/86-qoobpro.rules \
 	data/qoobpro-usbhid-ignore TODO README COPYING NEWS ChangeLog \
         packaging/debian/changelog packaging/debian/compat \
 	packaging/debian/control packaging/debian/copyright \
-	packaging/debian/rules
+	packaging/debian/rules packaging/debian/libqoob0.install \
+	packaging/debian/libqoob0.postinst packaging/debian/libqoob0.postrm \
+	packaging/debian/libqoob-dev.install
 CLEANFILES = $(pcfiles) $(pcfiles_uninstalled)
