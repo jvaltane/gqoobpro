@@ -22,7 +22,7 @@ Description: library to operate with Nintendo Gamecube Qoob Pro mod-chip
 Package: libqoob-dev
 Section: libdevel
 Architecture: any
-Depends: libqoob0 (= ${Source-Version}), ${shlibs:Depends}
+Depends: libqoob0 (= ${Source-Version}), libusb-dev, libc6-dev | libc-dev, ${shlibs:Depends}
 Description: development files for libqoob
  .
  libqoob is library to operate easily with Nintendo Gamecube Qoob Pro
