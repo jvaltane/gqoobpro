@@ -31,9 +31,8 @@ install: build
 	dh_testdir
 	dh_testroot
 	dh_clean -k
-	dh_installdirs usr/bin -pqoob-flasher
+	dh_installdirs usr/bin usr/share/man/man1 -pqoob-flasher
 	$(MAKE) install DESTDIR=`pwd`/debian/tmp
-	$(MAKE) deb-install
 	dh_install --sourcedir=debian/tmp --list-missing
 
 binary-indep: build install
@@ -43,6 +42,7 @@ binary-arch: build install
 	dh_testroot
 	dh_installdocs -A README TODO AUTHORS NEWS
 	dh_installchangelogs ChangeLog
+	dh_installmanpages
 	dh_link
 	dh_strip
 	dh_compress
