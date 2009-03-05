@@ -154,6 +154,16 @@ qoob_sync_usb_find (qoob_t *qoob)
 }
 
 /* TODO: Check and reqrite asap with better knowledge about usb and flasher */
+
+/*
+ * qoob_sync_usb_list ()
+ *
+ *   input: qoob - qoob handle
+ *          slots - slots to return. 
+ * 
+ * Remember to free slots with qoob_sync_slot_free () after use.
+ * 
+ */
 qoob_error_t 
 qoob_sync_usb_list (qoob_t *qoob, 
                qoob_slot_t **slots)
@@ -241,7 +251,10 @@ qoob_sync_usb_list (qoob_t *qoob,
       memcpy (tmpbuf, EMPTY_SLOT_NAME, strlen (EMPTY_SLOT_NAME));
       memset (buf, 0, QOOB_PRO_MAX_BUFFER);
       buf[SLOTS_IN_USE_INDEX] = 1;
+
+      /* Adds just readed slot to qoob->slot */
       add_to_slot_array (qoob, (int)slot, tmpbuf, buf);
+
       slot++;
     }
 
@@ -252,7 +265,11 @@ qoob_sync_usb_list (qoob_t *qoob,
       break;
   }
 
-  *slots = qoob->slot;
+  *slots = malloc (sizeof (qoob_slot_t) * QOOB_PRO_SLOTS);
+  if (*slots == NULL)
+    abort ();
+
+  memcpy (*slots, qoob->slot, (sizeof (qoob_slot_t) * QOOB_PRO_SLOTS));
 
   return QOOB_ERROR_OK;
 }

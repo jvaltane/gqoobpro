@@ -1,3 +1,9 @@
+qoob-flasher (0.12) unstable; urgency=low
+
+  * Free slots after use
+
+ -- Joni Valtanen <jvaltane@kapsi.fi>  Thu, 05 Mar 2009 20:42:14 +0200
+
 qoob-flasher (0.11) unstable; urgency=low
 
   * Initial release.

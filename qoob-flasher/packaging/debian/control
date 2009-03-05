@@ -2,11 +2,11 @@ Source: qoob-flasher
 Section: utils
 Priority: optional
 Maintainer: Joni Valtanen <jvaltane@kapsi.fi>
-Build-Depends: debhelper (>= 5.0), pkg-config, libqoob-dev (>= 0.11)
+Build-Depends: debhelper (>= 5.0), pkg-config, libqoob-dev (>= 0.12)
 Standards-Version: 3.8.0
 
 Package: qoob-flasher
-Version: 0.11
+Version: 0.12
 Section: libs
 Priority: optional
 Architecture: any

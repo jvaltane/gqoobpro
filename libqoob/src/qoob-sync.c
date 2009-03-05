@@ -18,6 +18,7 @@
  */
 
 #include <stdio.h>
+#include <string.h>
 
 #include <usb.h>
 
@@ -136,6 +137,30 @@ qoob_sync_set_callback (qoob_t *qoob,
   qoob->user_data = user_data;
 
   return QOOB_ERROR_OK;
+}
+
+qoob_slot_t *
+qoob_sync_slot_copy (qoob_slot_t *slot)
+{
+  qoob_slot_t *ret;
+
+  if (slot == NULL) {
+    return NULL;
+  }
+  
+  ret = (qoob_slot_t *)malloc (sizeof (qoob_slot_t) * QOOB_PRO_SLOTS);
+  if (ret == NULL)
+    abort ();
+
+  memcpy (ret, slot, sizeof (qoob_slot_t) * QOOB_PRO_SLOTS);
+  
+  return ret;
+}
+
+void qoob_sync_slot_free (qoob_slot_t *slot)
+{
+  if (slot != NULL)
+    free (slot);
 }
 
 /* Emacs indentatation information

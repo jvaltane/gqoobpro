@@ -1,3 +1,10 @@
+libqoob0 (0.12) unstable; urgency=low
+
+  * Make copy from slots in qoob_sync_usb_get_list ()
+  * Add copy and free functions to slots
+
+ -- Joni Valtanen <jvaltane@kapsi.fi>  Thu, 05 Mar 2009 20:40:34 +0200
+
 libqoob0 (0.11) unstable; urgency=low
 
   * Initial release.

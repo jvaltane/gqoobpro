@@ -361,6 +361,7 @@ flasher_init (qoob_flasher_t *flasher)
 static void
 flasher_deinit (qoob_flasher_t *flasher)
 {
+  qoob_sync_slot_free (flasher->slots);
   qoob_sync_deinit (&flasher->qoob);
 
   if (flasher->file != NULL) {

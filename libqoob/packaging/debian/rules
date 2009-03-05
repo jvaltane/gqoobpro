@@ -48,7 +48,7 @@ binary-arch: build install
 	dh_strip
 	dh_compress
 	dh_fixperms
-	dh_makeshlibs -p libqoob0 -V 'libqoob0 (>=0.11)'
+	dh_makeshlibs -p libqoob0 -V 'libqoob0 (>=0.12)'
 	dh_installdeb
 	dh_shlibdeps -l libqoob0 -Ldebian/tmp/usr/lib
 	dh_gencontrol -- -Tdebian/libqoob0.substvars
