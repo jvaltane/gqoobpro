@@ -6,6 +6,12 @@ if [ "$1" = configure ]; then
      invoke-rc.d udev restart
   fi
 
+# Restarting udev seems to cause sometimes stop to network so restart it also
+  if [ -x "/etc/init.d/networking" -a -x "/usr/sbin/invoke-rc.d" ]; then
+     echo "Restarting networking..."
+     invoke-rc.d networking restart
+  fi
+
   if [ -x "/sbin/modprobe" -a -x "/sbin/rmmod" ]; then
      echo "Reloading usbhid module..."
      rmmod usbhid
