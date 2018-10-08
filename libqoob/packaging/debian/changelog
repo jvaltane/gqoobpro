@@ -1,3 +1,10 @@
+libqoob0 (0.13) unstable; urgency=low
+
+  * Error messages rework
+  * Update documentation
+
+ -- Joni Valtanen <jvaltane@kapsi.fi>  Mon, 08 Aug 2018 23:12:34 +0200
+
 libqoob0 (0.12) unstable; urgency=low
 
   * Make copy from slots in qoob_sync_usb_get_list ()

@@ -6,29 +6,29 @@ Build-Depends: debhelper (>= 5.0), pkg-config, libusb-dev
 Standards-Version: 3.8.0
 
 Package: libqoob0
-Version: 0.11
+Version: 0.13
 Section: libs
 Priority: optional
 Architecture: any 
-Depends: ${shlibs:Depends}, udev (>= 0.105), module-init-tools (>=3.3)
+Depends: ${shlibs:Depends}, udev (>= 0.105), kmod
 Maintainer: Joni Valtanen <jvaltane@kapsi.fi>
 Description: library to operate with Nintendo Gamecube Qoob Pro mod-chip
  .
  libqoob is library to operate easily with Nintendo Gamecube Qoob Pro 
- mod chip. Library supports listing, writing, reading and erasing. 
- Reading supports only GCB file format. Writing supports GCB, DOL and 
- ELF formats.
-
+ mod chip. Library supports listing, writing, reading and erasing
+ Qoob Pros flash. Reading supports only GCB file format. Writing
+ supports GCB, DOL and ELF formats.
+ 
 Package: libqoob-dev
 Section: libdevel
 Architecture: any
-Depends: libqoob0 (= ${Source-Version}), libusb-dev, libc6-dev | libc-dev, ${shlibs:Depends}
+Depends: libqoob0 (= ${source:Version}), libusb-dev, libc6-dev | libc-dev, ${shlibs:Depends}
 Description: development files for libqoob
  .
- libqoob is library to operate easily with Nintendo Gamecube Qoob Pro
- mod chip. Library supports listing, writing, reading and erasing. 
- Reading supports only GCB file format. Writing supports GCB, DOL and 
- ELF formats. 
+ libqoob is library to operate easily with Nintendo Gamecube Qoob Pro 
+ mod chip. Library supports listing, writing, reading and erasing
+ Qoob Pros flash. Reading supports only GCB file format. Writing
+ supports GCB, DOL and ELF formats.
  .
  This package contains header files and libraries needed to 
  compile applications that use libqoob.
