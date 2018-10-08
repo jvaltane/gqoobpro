@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 2009 Joni Valtanen <jvaltane@kapsi.fi>
+ * Copyright (C) 2009-2018 Joni Valtanen <jvaltane@kapsi.fi>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -604,7 +604,7 @@ qoob_sync_usb_write (qoob_t *qoob,
   }
 
   if ((slotnum+used_slots-1) >= QOOB_PRO_SLOTS) {
-    return QOOB_ERROR_SLOT_OUT_OF_RANGE;
+    return QOOB_ERROR_DATA_TOO_BIG;
   }
 
   for (i=slotnum; i<(slotnum+used_slots); i++) {

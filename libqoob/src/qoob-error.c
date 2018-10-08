@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 2009 Joni Valtanen <jvaltane@kapsi.fi>
+ * Copyright (C) 2009-2018 Joni Valtanen <jvaltane@kapsi.fi>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -24,47 +24,49 @@ qoob_error_to_string (qoob_error_t e)
 {
   switch (e) {
   case QOOB_ERROR_OK:
-    return "Everything is OK!!!";
+    return "No error.";
   case QOOB_ERROR_NOT_FOUND:
-    return "Device not found via USB!!!";
+    return "Error: Device not found via USB.";
   case QOOB_ERROR_CLAIM_INTERFACE:
-    return "Could not claim usb interface!!!";
+    return "Error: Could not claim USB interface.";
   case QOOB_ERROR_ALT_INTERFACE:
-    return "Could not set altinterface!!!";
+    return "Error: Could not set USB altinterface.";
   case QOOB_ERROR_DEVICE_UNKNOWN1:
-    return "Unknown device error1!!!";
+    return "Error: Unknown device error 1.";
   case QOOB_ERROR_INPUT_NOT_VALID:
-    return "Function parameter  invalid!!!";
+    return "Error: Function parameter invalid.";
   case QOOB_ERROR_DEVICE_HANDLE_NOT_VALID:
-    return "USB device handle invalid!!!";
+    return "Error: USB device handle invalid.";
   case QOOB_ERROR_FILE_NOT_VALID:
-    return "Name of the file is invalid!!!";
+    return "Error: Name of the file is invalid.";
   case QOOB_ERROR_FILE_STAT:
-    return "Stat fails. Probably because missing file!!!";
+    return "Error: Stat fails. Probably because missing file.";
   case QOOB_ERROR_SLOT_OUT_OF_RANGE:
-    return "Slot out of range!!!";
+    return "Error: Slot is out of range.";
   case QOOB_ERROR_SLOT_RANGE_NOT_VALID:
-    return "Given slot range is not valid!!!";
+    return "Error: Given slot range is not valid.";
   case QOOB_ERROR_SLOT_NOT_FIRST:
-    return "Not slot started by any application!!!";
+    return "Error: Any application does not start at given slot.";
   case QOOB_ERROR_FD_OPEN:
-    return"Could not open file descriptor!!!";
+    return "Error: Could not open file.";
   case QOOB_ERROR_FD_READ:
-    return "Could not read from the file!!!";
+    return "Error: Could not read from the file.";
   case QOOB_ERROR_FD_WRITE:
-    return "Could not write to the file!!!";
+    return "Error: Could not write to the file.";
   case QOOB_ERROR_FD_SEEK:
-    return "Seek fails!!!";
+    return "Error: Seeking file fails.";
   case QOOB_ERROR_SEND_DATA:
-    return "Sending data to device fails!!!";
+    return "Error: Sending data to device fails.";
   case QOOB_ERROR_TRYING_TO_OVERWRITE:
-    return "Trying to overwrite existing data!!!";
+    return "Error: Trying to overwrite existing data.";
   case QOOB_ERROR_NOT_SUPPORTED_FILE_FORMAT:
-    return "File format is not supported!!!";
+    return "Error: File format is not supported.";
+  case QOOB_ERROR_DATA_TOO_BIG:
+    return "Error: Data too big. Not enough space at flash.";
   default:
     break;
   }
-  return "If you see this report a bug!!!";
+  return "If you see this report a bug.";
 }
 
 
