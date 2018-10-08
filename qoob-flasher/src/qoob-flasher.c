@@ -46,14 +46,14 @@ main (int argc, char **argv)
 
   /* Initialize struct */
   if (flasher_init (&flasher)) {
-    fprintf (stderr, "Error: init flasher\n");
+    fprintf (stderr, "Error: init flasher.\n");
     return 1;
   }
 
   /* Initialize qoob */
   ret = qoob_sync_init (&flasher.qoob);
   if (ret != QOOB_ERROR_OK) {
-    fprintf (stderr, "Error: init qoob library\n");
+    fprintf (stderr, "Error: init qoob library.\n");
     return 1;
   }
 
@@ -89,7 +89,7 @@ main (int argc, char **argv)
   }
     break;
 
-  /* Reading flashed bios or application to file */
+  /* Reading flashed bios, config or application to file */
   case FLASHER_COMMAND_READ: {
 
     if (flasher.verbose > 0) {
@@ -327,7 +327,7 @@ qoob_callback (qoob_sync_callback_t type,
   default:
     fprintf (stderr, 
              "ERROR: Unhandled callback.\n"
-             "This is bug in qoob-flasher or libqoob\n");
+             "This is bug in qoob-flasher or libqoob.\n");
     flasher_deinit ((qoob_flasher_t *)user_data);
     exit (113);
     break;
@@ -368,7 +368,6 @@ flasher_deinit (qoob_flasher_t *flasher)
     free (flasher->file);
   }
   flasher->file = NULL;
-
 }
 
 /* Emacs indentatation information

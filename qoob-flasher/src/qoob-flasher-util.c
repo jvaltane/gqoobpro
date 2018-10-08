@@ -149,14 +149,14 @@ void
 qoop_flasher_util_print_help (void) 
 {
   printf ("Usage: qoob-flasher [OPTION]... [FILE]\n");
-  printf ("Util to work with Qoop Pro Gamecube mod-chip. Only GCB is supported fileformat to flash.\n\n");
+  printf ("Util to work with Qoop Pro Gamecube mod-chip.\n\n");
 
   printf ("  -h, --help               display this help and exits\n");
   printf ("  -v, --verbose            gives more information what happens\n");
   printf ("  -s, --slot-list          prints slot list after write or erase\n");
-  printf ("  -w, --write=SLOT         writes given file to flash. Use with -d,-l or -g\n");
-  printf ("  -r, --read=SLOT          reads gcb file from flash to given file\n");
-  printf ("  -e, --erase=SLOT         erase appilacion in flash\n");
+  printf ("  -w, --write=SLOT         writes given file to flash. Use with -l, -d or -q\n");
+  printf ("  -r, --read=SLOT          reads given slot as gcb to given file\n");
+  printf ("  -e, --erase=SLOT         erase application in flash\n");
   printf ("  -f, --force-erase=SLOT   erase one slot\n");
   printf ("  -l, --elf                Set ELF file format to write\n");
   printf ("  -d, --dol                Set DOL file format to write\n");
