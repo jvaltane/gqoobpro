@@ -1,5 +1,3 @@
-Check NEWS and use 'git log' to find out what is changed.
+2018-10-09  Joni Valtanen <jvaltane@kapsi.fi>
 
-git repositories
-  * git://gitorious.org/gqoob/mainline.git or
-  * http://git.gitorious.org/gqoob/mainline.git
+    * See ReleaseNotes and git log for real changes.

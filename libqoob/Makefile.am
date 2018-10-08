@@ -22,7 +22,7 @@ deb-install:
 	install -c --mode=644 $(top_srcdir)/data/qoobpro.conf $(top_srcdir)/debian/tmp/etc/modprobe.d/
 
 EXTRA_DIST = libqoob.pc.in autogen.sh data/86-qoobpro.rules \
-	data/qoobpro.conf TODO README COPYING NEWS ChangeLog \
+	data/qoobpro.conf TODO README COPYING NEWS ChangeLog ReleeaseNotes \
         packaging/debian/changelog packaging/debian/compat \
 	packaging/debian/control packaging/debian/copyright \
 	packaging/debian/rules packaging/debian/libqoob0.install \

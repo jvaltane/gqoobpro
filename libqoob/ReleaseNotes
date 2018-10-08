@@ -1,0 +1,51 @@
+libqoob 0.13
+
+Changes since libqoob 0.12:
+
+    * FreeBSD patches from Ultrageranium
+    * Error message rework
+    * README updates
+    * Rename NEWS to ReleaseNotes. Create new NEWS and ChangeLog
+    * Debian packaging to Debian 9.4
+
+libqoob 0.12
+
+Changes since libqoob 0.11:
+
+    * Add new error to tell that file format is not supported
+    * first github release
+    * Debian packaging updates
+
+
+libqoob 0.11
+
+Changes since libqoob 0.10:
+
+    * Debian packaging
+    * Add test to pkg-config in configure
+    * Change TRUE and FALSE to enum called qoob_boolean_t and names changed 
+    QOOB_TRUE and QOOB_FALSE
+    * Change tmpnam() to safer mkstemp()
+
+
+libqoob 0.10
+
+Changes since libqoob 0.9:
+
+    * Add sync in function names. Describes better functionality of calls
+    * Change darvin test in configure.ac from host to target
+    * Some splitting to separate files
+    * Add callback system to syncronous function calls
+    * Remove verbose things. Does not belong to library
+    * Change qoob.h just include other headers
+
+
+libqoob 0.9
+
+Changes since libqoob 0.8:
+
+    * Add support for Qoob configure file format
+    * Add more input tests to write
+    * Erase area what will be written
+    * Now removes temporary file created by write
+    * README updated

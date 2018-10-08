@@ -5,6 +5,7 @@
 ------------
 INTRODUCTION
 ------------
+
 libqoob provides easy way to communicate with Gamecube Qoob Pro mod chip via 
 libusb. libqoob is part of the GQoobPro package which contains LGPL and GPL 
 tools for Qoob Pro mod chip.
@@ -12,6 +13,7 @@ tools for Qoob Pro mod chip.
 --------
 QOOB PRO
 --------
+
 Qoob Pro is mod chip for Nintendo Gamecube with 2Mb(16MBit) internal flash 
 memory. It is flashable via USB. Flash is splitted to 32 pieces, 64kb each. 
 Qoob Pro bios starts at first slot and rest are freely usable. Last official 
@@ -20,61 +22,67 @@ qoob bios (1.3c) uses two slots.
 ----------------------
 SUPPORTED FILE FORMATS
 ----------------------
- ___
-|GCB|___
-GCB is Qoobs own format. There is special Qoob-flash header within. GCB file 
-format is possible to detected automaticly.
 
- ___
-|DOL|___
-DOL is Dolphin format which is used by commercial games to Gamecube. DOL file format is not possible to separate random data. That means it is not possible to detect automaticly.
+GCB
+---
 
- ___
-|ELF|___
-ELF is format what GCC outputs default. ELF file format is possible to detected
-automaticly.
+GCB is Qoobs own format. There is special Qoob-flash header in it. GCB file
+format is possible to detect by software.
+
+DOL
+---
+
+DOL is Dolphin format which is used by commercial Gamecube games. DOL file
+format is not possible to detect by software. It looks like random data.
+
+ELF
+---
+
+ELF is file format what GCC usually outputs. ELF file format is possible to
+detected by software.
 
 ------------
 REQUIREMENTS
 ------------
-* Supported operating system. GNU/Linux, *BSD or MacOSX with macports or 
-  similar .
-* libusb
+
+* GNU/Linux, *BSD or MacOSX with macports
+* libusb 0.1.12
 
 ------------------
 OTHER REQUIREMENTS
 ------------------
- _____
-|Linux|___
+
+Linux
+-----
 
 With Linux first you have to get Qoob Pro connected properly. There can be 
-problems with kernel. Kernel blocks usage of Qoobb Pro by loading automatically
-hid kernel driver and libqoob can't claim the Qoob Pro:s USB interface. 
+problems with kernel. Kernel might block usage of Qoob Pro by loading hid kernel
+driver and libqoob can't claim the Qoob Pros USB-interface.
 
 * Blacklist Qoob Pro from usbhid module
 
-   Problem is to find way to give options to the kernel-modules on the boottime.
+   Give options to the kernel-modules.
 
    Module options to usbhid "quirks=0x03eb:0x0001:0x00000004" 0x00000004 means
    ignoring 0x03eb:0x0001 totally. 0x03eb:0x0001 is Qoob Pro:s USB "address".
 
-   Use "lsusb" to check is Qoob connected. "dmesg" is also informative when 
+   Use "lsusb" to check if Qoob is connected. "dmesg" is also informative when 
    connecting USB devices.
 
    For example in Ubuntu and probably Debian easiest way to do this is to add 
-   "options usbhid quirks=0x03eb:0x0001:0x00000004" to file "/etc/modprobe.d/options"
-   This can be tested with "rmmod usbhid" and "modprobe usbhid". No reboot 
-   required. In debian you might have to add "/rtc/modprobe.conf" and line
-   "include /etc/modprobe.d" to there.
+   "options usbhid quirks=0x03eb:0x0001:0x00000004" to file in modprob.d
+   directory "/etc/modprobe.d/qoobpro.conf". Confifure can be tested with
+   command "rmmod usbhid && modprobe usbhid". No reboot required.
 
 * Access with regular user to Qoob Pro USB device (optional)
 
-   Problem is to find way how normal user get read and write permissions to USB
-   device with libusb.
+   Normally users do not have access to USB devices. Problem is to find way how
+   normal user get read and write permissions to USB-device with libusb.
 
-   Normally users do not have access to USB devices. With udev new rule should
-   help. For example add following text to "86-qoobpro.rules" file and add it
-   to same place with other udev rules.
+* Giving access with udev
+
+   Using udev new rule file should help. For example add following text to
+   "86-qoobpro.rules" file and add it to same place with other udev rules.
 
 -------------------------------------------------------------------------------
 #
@@ -89,35 +97,44 @@ LABEL="qoobpro_rules_end"
 -------------------------------------------------------------------------------
 
    Rule can be found from data directory. Choose your group freely. Other 
-   similar systems might be used instead of udev. Hotplug for example. 
+   similar systems might be used instead of udev.
 
 * Do you have different problems and/or know how to solve those? Tell me.
 
- ______
-|MacOSX|___
+
+MacOSX
+------
+
 With MacOSX needs to get rid of OS:s control as well.
 
-* Getting over Qoob Pro work with OSX:s libusb 
-Compile and install QoobProDriver kernel extension. Optionally just install it
-if there is suitable version. After installation reboot the machine. Extension is part of the GQoobPro package.
+* Getting over Qoob Pro work with OSX:s libusb
 
-* After reboot OSX should not steal Qoobs USB interface itself. Normal user 
-should be able to use device.
+Compile and install QoobProDriver kernel extension. Optionally just install it
+if there is suitable version. After installation reboot the machine. Extension
+is part of the GQoobPro package.
+
+* After reboot OSX should not steal Qoobs USB interface anymore to itself and
+normal user  should be able to use device.
 
 -----------
 TESTED WITH
 -----------
- _____
-|Linux|___
+
+Linux
+-----
+
 * Ubuntu Intrepid (64bit) with libusb 0.1.12.
-* Debian Lenny (32bit PPC) with libisb 0.1.12
- ______
-|MacOSX|___
+* Debian Lenny (32bit PPC) with libusb 0.1.12
+
+MacOSX
+------
+
 * OSX Panther 10.3.9 (PPC) with macports and libusb 0.1.12
 
 ----------
 INSTALLING
 ----------
+
 ./configure
 make
 make install (as root) 
@@ -125,15 +142,18 @@ make install (as root)
 ---------
 COPYRIGHT
 ---------
-libqoob is copyright (C) 2009 Joni Valtanen.
+
+libqoob is copyright (C) 2009-2018 Joni Valtanen <jvaltane@kapsi.fi>.
 
 -------
 LICENSE
 -------
+
 GNU Library General Public License version 2
 
 ----------
 TRADEMARKS
 ----------
+
 Gamecube(tm) is the registered trademark of the Nintendo.
 All other trademarks are the property of their respective owners.
