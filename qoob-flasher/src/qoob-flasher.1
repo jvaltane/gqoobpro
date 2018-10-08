@@ -1,6 +1,6 @@
 .
 .
-.TH QOOB\-FLASHER 1  "January 2009" "Qoob Pro" "Flasher utility"
+.TH QOOB\-FLASHER 1  "October 2018" "Qoob Pro" "Flasher utility"
 .
 .
 .SH NAME 
@@ -21,9 +21,9 @@ is a flasher tool for Nintendo Gamecube Qoob Pro
 .br
 mod\-chip. qoob\-flasher supports listing, erasing, reading 
 .br
-and writing flash slots. Supported file formats for writing 
+and writing Qoob Pros flash slots. Supported file formats for
 .br
-are GCB, ELF and DOL. Reading is GCB only.
+writing are GCB, ELF and DOL. Reading is GCB only.
 .
 .
 .
@@ -42,7 +42,7 @@ Read from flash to given file. Format is always GCB
 .
 .TP
 .B \-e, \-\-erase=SLOT
-Erase application in flash
+Erase application in flash slot
 .
 .TP
 .B \-f, \-\-force\-erase=SLOT
@@ -50,15 +50,15 @@ Erase one slot
 .
 .TP
 .B \-l, \-\-elf
-ELF file format to be written
+Use ELF file for writes
 .
 .TP
 .B \-d, \-\-dol
-DOL file format to be written
+Use DOL file for write
 .
 .TP
 .B \-q, \-\-qoob
-GCB or Qoob Config file format to be written
+Use GCB or Qoob Config files for write
 .
 .TP
 .B \-v, \-\-verbose
@@ -89,11 +89,11 @@ qoob\-flasher \-e0
 .
 .TP
 .B Write bios to the flash.
-qoob\-flasher \-q \-w0 /tmp/qoob\-bios.gcb.
+qoob\-flasher \-q \-w0 /tmp/qoob\-bios.gcb
 .
 .TP
 .B Write bios to the flash and list it after flashing.
-qoob\-flasher \-s \-q \-w0 /tmp/qoob\-bios.gcb.
+qoob\-flasher \-s \-q \-w0 /tmp/qoob\-bios.gcb
 .
 .TP
 .B Read config from the flash and save it to /tmp.
@@ -105,7 +105,7 @@ qoob\-flasher \-e31
 .
 .TP
 .B Write Qoob config to the flash.
-qoob\-flasher \-q \-w31 /tmp/qoob\-config.gcb.
+qoob\-flasher \-q \-w31 /tmp/qoob\-config.gcb
 .
 .TP
 .B Read config from the flash and save it to /tmp. Gives little information about where is written and is this success.
@@ -115,14 +115,19 @@ qoob\-flasher \-v \-r31 /tmp/qoob\-config.gcb
 .B Read config from the flash and save it to /tmp. Gives also information about progress of the command.
 qoob\-flasher \-vv \-r31 /tmp/qoob\-config.gcb
 .
+.TP
+.B Write DOL file to the flash starting at slot 1
+qoob\-flasher \-d \-w1 /tmp/test-dol-app.dol
+.
 .
 .
 .SH AUTHOR 
 Written by Joni Valtanen.
 .
 .
+.
 .SH COPYRIGHT
-Copyright  ©  2009  Joni  Valtanen.  License  GNU  GPL  version  2  or
+Copyright  ©  2009-2018  Joni  Valtanen.  License  GNU  GPL  version  2  or
 .br
 later <http://gnu.org/licenses/gpl.html>.  This  is  free  software:  
 .br
