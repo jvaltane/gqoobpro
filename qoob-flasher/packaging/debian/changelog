@@ -1,3 +1,10 @@
+qoob-flasher (0.13) unstable; urgency=low
+
+  * Update documentation
+  * Fix typos
+
+ -- Joni Valtanen <jvaltane@kapsi.fi>  Tue, 09 Oct 2018 00:48:32 +0200
+
 qoob-flasher (0.12) unstable; urgency=low
 
   * Free slots after use
