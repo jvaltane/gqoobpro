@@ -1,4 +1,4 @@
-AC_INIT(libqoob, 0.12, jvaltane@kapsi.fi)
+AC_INIT(libqoob, 0.13, jvaltane@kapsi.fi)
 AC_CONFIG_SRCDIR(Makefile.am)
 AC_CANONICAL_TARGET
 
