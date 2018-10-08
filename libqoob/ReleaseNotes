@@ -6,7 +6,7 @@ Changes since libqoob 0.12:
     * Error message rework
     * README updates
     * Rename NEWS to ReleaseNotes. Create new NEWS and ChangeLog
-    * Debian packaging to Debian 9.4
+    * Update Debian packaging little bit. Makes deps with Debian 9.4
 
 libqoob 0.12
 
