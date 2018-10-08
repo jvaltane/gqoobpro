@@ -7,7 +7,12 @@ all-local: $(pcfiles)
 %.pc: %.pc
 	cp $< $@
 
+if FREEBSD
+pkgconfigdir = $(prefix)/libdata/pkgconfig
+else
 pkgconfigdir = $(libdir)/pkgconfig
+endif
+
 pkgconfig_DATA = $(pcfiles)
 
 deb-install:

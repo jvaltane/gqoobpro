@@ -20,6 +20,11 @@
 #ifndef _QOOB_DEFAULTS_H_
 #define _QOOB_DEFAULTS_H_
 
+#if defined(__FreeBSD__)
+#include <stdlib.h>
+#include <malloc_np.h>
+#endif
+
 /* Common typedefs */
 typedef enum {
   QOOB_FALSE = 0,

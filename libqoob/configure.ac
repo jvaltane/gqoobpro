@@ -16,9 +16,19 @@ if test -z "$PKG_CONFIG" ; then
   AC_MSG_ERROR( pkg-config is required )
 fi
 
-PKG_CHECK_MODULES(libusb, [libusb >= 0.1.12], , AC_MSG_ERROR( libusb >= 0.1-12 is required ))
-AC_SUBST(libusb_CFLAGS)
-AC_SUBST(libusb_LIBS)
+if test "$(uname)" == "FreeBSD"; then
+  PKG_CHECK_MODULES(libusb, [libusb-0.1 >= 0.1], , AC_MSG_ERROR( libusb >= 0.1 is required ))
+  AC_SUBST(libusb_CFLAGS)
+  AC_SUBST(libusb_LIBS)
+  AC_SUBST(PACKAGE_REQUIRES, [libusb-0.1])
+  AM_CONDITIONAL([FREEBSD], [true])
+else
+  AM_CONDITIONAL([FREEBSD], [false])
+  PKG_CHECK_MODULES(libusb, [libusb >= 0.1.12], , AC_MSG_ERROR( libusb >= 0.1-12 is required ))
+  AC_SUBST(libusb_CFLAGS)
+  AC_SUBST(libusb_LIBS)
+  AC_SUBST(PACKAGE_REQUIRES, [libusb])
+fi
 
 dnl debug
 AC_ARG_ENABLE(debug,

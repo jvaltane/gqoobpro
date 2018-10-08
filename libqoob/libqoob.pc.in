@@ -6,6 +6,6 @@ includedir=@includedir@/libqoob
 Name: libqoob
 Description: Qoob Pro flasher library
 Version: @VERSION@
-Requires: libusb
+Requires: @PACKAGE_REQUIRES@ 
 Libs: -L${libdir} -lqoob
 Cflags: -I${includedir}
