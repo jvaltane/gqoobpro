@@ -1,0 +1,19 @@
+Source: qoob-flasher
+Section: utils
+Priority: optional
+Maintainer: Joni Valtanen <jvaltane@kapsi.fi>
+Build-Depends: debhelper (>= 9.0), pkg-config, libqoob-dev (= 0.13)
+Standards-Version: 3.8.0
+
+Package: qoob-flasher
+Version: 0.13
+Section: libs
+Priority: optional
+Architecture: any
+Depends: ${shlibs:Depends}
+Maintainer: Joni Valtanen <jvaltane@kapsi.fi>
+Description: util to operate with Nintendo Gamecube Qoob Pro mod-chip
+ .
+ qoob-flasher is utility to operate with Nintendo Gamecube Qoob Pro 
+ mod chip via USB. qoob-flasher supports listing, writing, reading and 
+ erasing Qoob Pros flash. Flasher uses libqoob to access device.

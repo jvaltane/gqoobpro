@@ -1,0 +1,15 @@
+#!/bin/sh
+
+if [ "$1" = remove ]; then
+  ldconfig
+fi
+
+if [ "$1" = configure ]; then
+  if [ -x "/sbin/modprobe" -a -x "/sbin/rmmod" ]; then
+     echo "Reloading usbhid module..."
+     rmmod usbhid
+     modprobe usbhid
+     echo "Now you can remove libqoob user(s) from plugdev group."
+  fi 
+
+fi

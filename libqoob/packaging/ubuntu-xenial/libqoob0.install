@@ -1,0 +1,2 @@
+/etc/modprobe.d/qoobpro.conf /etc/modprobe.d/
+/usr/lib/*.so.* /usr/lib/

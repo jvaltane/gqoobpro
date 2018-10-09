@@ -1,0 +1,14 @@
+#!/bin/sh
+
+if [ "$1" = configure ]; then
+  if [ -x "/sbin/modprobe" -a -x "/sbin/rmmod" ]; then
+     echo "Reloading usbhid module..."
+     rmmod usbhid
+     modprobe usbhid
+     echo "Add your libqoob user to plugdev group."
+  fi
+
+  if [ -x "/sbin/ldconfig" ]; then
+     ldconfig
+  fi
+fi
