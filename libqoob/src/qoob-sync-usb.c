@@ -589,14 +589,14 @@ qoob_sync_usb_write (qoob_t *qoob,
   printf ("Real file: '%s'\n", qoob->real_file);
 #endif
 
-  /* FIXME: add more cases */
+  /* FIXME: add more test cases */
   if (stat (qoob->real_file, &sbuf) == -1) {
     free (qoob->real_file);
     qoob->real_file = NULL;
     return QOOB_ERROR_FILE_STAT;
   }
 
-   /* Get how many slots is used */
+   /* Get how many slots are used */
   used_slots = sbuf.st_size/QOOB_PRO_SLOT_SIZE;
   if (sbuf.st_size > (QOOB_PRO_SLOT_SIZE) && 
       sbuf.st_size%(QOOB_PRO_SLOT_SIZE)) {
@@ -604,7 +604,7 @@ qoob_sync_usb_write (qoob_t *qoob,
   }
 
   if ((slotnum+used_slots-1) >= QOOB_PRO_SLOTS) {
-    return QOOB_ERROR_DATA_TOO_BIG;
+    return QOOB_ERROR_TOO_BIG_DATA;
   }
 
   for (i=slotnum; i<(slotnum+used_slots); i++) {

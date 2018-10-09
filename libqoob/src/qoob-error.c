@@ -26,47 +26,47 @@ qoob_error_to_string (qoob_error_t e)
   case QOOB_ERROR_OK:
     return "No error.";
   case QOOB_ERROR_NOT_FOUND:
-    return "Error: Device not found via USB.";
+    return "Device not found via USB.";
   case QOOB_ERROR_CLAIM_INTERFACE:
-    return "Error: Could not claim USB interface.";
+    return "Could not claim USB interface.";
   case QOOB_ERROR_ALT_INTERFACE:
-    return "Error: Could not set USB alt interface.";
+    return "Could not set USB alt interface.";
   case QOOB_ERROR_DEVICE_UNKNOWN1:
-    return "Error: Unknown device error 1.";
+    return "Unknown device error 1.";
   case QOOB_ERROR_INPUT_NOT_VALID:
-    return "Error: Function parameter invalid.";
+    return "Function parameter invalid.";
   case QOOB_ERROR_DEVICE_HANDLE_NOT_VALID:
-    return "Error: USB device handle invalid.";
+    return "USB device handle invalid.";
   case QOOB_ERROR_FILE_NOT_VALID:
-    return "Error: Name of the file is invalid.";
+    return "Name of the file is invalid.";
   case QOOB_ERROR_FILE_STAT:
-    return "Error: Stat fails. Probably because missing file.";
+    return "Stat fails. Probably because missing file.";
   case QOOB_ERROR_SLOT_OUT_OF_RANGE:
-    return "Error: Slot is out of range.";
+    return "Slot is out of range.";
   case QOOB_ERROR_SLOT_RANGE_NOT_VALID:
-    return "Error: Given slot range is not valid.";
+    return "Given slot range is not valid.";
   case QOOB_ERROR_SLOT_NOT_FIRST:
-    return "Error: No application starts from given slot.";
+    return "No application starts from given slot.";
   case QOOB_ERROR_FD_OPEN:
-    return "Error: Could not open file.";
+    return "Could not open file.";
   case QOOB_ERROR_FD_READ:
-    return "Error: Could not read from the file.";
+    return "Could not read from the file.";
   case QOOB_ERROR_FD_WRITE:
-    return "Error: Could not write to the file.";
+    return "Could not write to the file.";
   case QOOB_ERROR_FD_SEEK:
-    return "Error: Seeking file fails.";
+    return "Seeking file fails.";
   case QOOB_ERROR_SEND_DATA:
-    return "Error: Sending data to device fails.";
+    return "Sending data to device fails.";
   case QOOB_ERROR_TRYING_TO_OVERWRITE:
-    return "Error: Trying to overwrite existing data.";
+    return "Trying to overwrite existing data.";
   case QOOB_ERROR_NOT_SUPPORTED_FILE_FORMAT:
-    return "Error: File format is not supported.";
+    return "File format is not supported.";
   case QOOB_ERROR_TOO_BIG_DATA:
-    return "Error: Data is too big. Not enough space at flash.";
+    return "Data is too big. Not enough space at flash.";
   default:
     break;
   }
-  return "If you see this report a bug.";
+  return "If you see this, report a bug to author.";
 }
 
 
