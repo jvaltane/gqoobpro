@@ -30,7 +30,7 @@ qoob_error_to_string (qoob_error_t e)
   case QOOB_ERROR_CLAIM_INTERFACE:
     return "Error: Could not claim USB interface.";
   case QOOB_ERROR_ALT_INTERFACE:
-    return "Error: Could not set USB altinterface.";
+    return "Error: Could not set USB alt interface.";
   case QOOB_ERROR_DEVICE_UNKNOWN1:
     return "Error: Unknown device error 1.";
   case QOOB_ERROR_INPUT_NOT_VALID:
@@ -46,7 +46,7 @@ qoob_error_to_string (qoob_error_t e)
   case QOOB_ERROR_SLOT_RANGE_NOT_VALID:
     return "Error: Given slot range is not valid.";
   case QOOB_ERROR_SLOT_NOT_FIRST:
-    return "Error: Any application does not start at given slot.";
+    return "Error: No application starts from given slot.";
   case QOOB_ERROR_FD_OPEN:
     return "Error: Could not open file.";
   case QOOB_ERROR_FD_READ:
@@ -61,8 +61,8 @@ qoob_error_to_string (qoob_error_t e)
     return "Error: Trying to overwrite existing data.";
   case QOOB_ERROR_NOT_SUPPORTED_FILE_FORMAT:
     return "Error: File format is not supported.";
-  case QOOB_ERROR_DATA_TOO_BIG:
-    return "Error: Data too big. Not enough space at flash.";
+  case QOOB_ERROR_TOO_BIG_DATA:
+    return "Error: Data is too big. Not enough space at flash.";
   default:
     break;
   }
